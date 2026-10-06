@@ -26,6 +26,7 @@ h1{margin:0;font-size:clamp(1.4rem,4vw,2.4rem);font-weight:900;font-stretch:118%
 .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .stats{display:flex;gap:clamp(14px,3vw,28px);font-size:clamp(.7rem,1.4vw,.85rem);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600}
 .stats span{display:flex;flex-direction:column;gap:2px}
+.stats span:first-child{min-width:7ch}
 .stats b{color:var(--ink);font-size:clamp(1.3rem,3.2vw,2rem);font-variant-numeric:tabular-nums;letter-spacing:0;line-height:1}
 button.go{font:inherit;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:clamp(.85rem,1.8vw,1.05rem);background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:14px 26px;min-height:48px;min-width:150px;cursor:pointer;touch-action:manipulation;font-variant-numeric:tabular-nums}
 button.go{transition:transform .1s ease-out,background-color .2s ease}
@@ -67,7 +68,7 @@ button:focus-visible{outline:3px solid var(--deep);outline-offset:3px}
     <h1>Memory Match</h1>
   </header>
   <div class="bar">
-    <div class="stats"><span>Time<b id="time">0:00</b></span><span>Moves<b id="moves">0</b></span><span>Pairs<b id="pairs">0/4</b></span></div>
+    <div class="stats"><span>Time<b id="time">0:00.00</b></span><span>Moves<b id="moves">0</b></span><span>Pairs<b id="pairs">0/4</b></span></div>
     <button class="go" id="go" type="button" disabled>Memorize 7</button>
   </div>
   <div class="stage"><div class="grid locked" id="grid"></div><div class="count" id="count" aria-live="assertive"><b id="num"></b></div></div>
@@ -84,12 +85,12 @@ const PREVIEW=7,$=id=>document.getElementById(id),grid=$('grid'),go=$('go');
 let open=[],moves=0,pairs=0,lock=true,phase='',t0=0,tick=0,cd=0;
 const count=$('count'),num=$('num');
 function show(t,go){num.className='';void num.offsetWidth;num.textContent=t;num.className='tick'+(go?' go':'')}
-const fmt=ms=>{const s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const fmt=ms=>{const c=Math.floor(ms/10),s=Math.floor(c/100);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+'.'+String(c%100).padStart(2,'0')};
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function start(){
   clearInterval(tick);clearInterval(cd);count.classList.remove('on');go.classList.remove('ready');
   open=[];moves=0;pairs=0;lock=true;phase='preview';
-  $('moves').textContent=0;$('pairs').textContent='0/4';$('time').textContent='0:00';
+  $('moves').textContent=0;$('pairs').textContent='0/4';$('time').textContent='0:00.00';
   grid.classList.add('locked');grid.innerHTML='';
   shuffle([...SET,...SET]).forEach(c=>{
     const b=document.createElement('button');b.type='button';b.className='card up';b.dataset.k=c.k;b.setAttribute('aria-label',c.k);
@@ -116,7 +117,7 @@ function ready(){
 }
 function begin(){
   phase='play';lock=false;go.disabled=false;grid.classList.remove('locked');go.textContent='New game';
-  t0=Date.now();tick=setInterval(()=>{$('time').textContent=fmt(Date.now()-t0)},200);
+  t0=performance.now();tick=setInterval(()=>{$('time').textContent=fmt(performance.now()-t0)},31);
 }
 function flip(b){
   if(lock||phase!=='play'||b.classList.contains('up'))return;
@@ -126,7 +127,7 @@ function flip(b){
   const [a,d]=open;open=[];
   if(a.dataset.k===d.dataset.k){
     a.classList.add('done');d.classList.add('done');$('pairs').textContent=(++pairs)+'/4';
-    if(pairs===4){clearInterval(tick);$('time').textContent=fmt(Date.now()-t0);phase='won';go.textContent='Play again'}
+    if(pairs===4){clearInterval(tick);$('time').textContent=fmt(performance.now()-t0);phase='won';go.textContent='Play again'}
   }else{
     lock=true;setTimeout(()=>{[a,d].forEach(x=>{x.classList.remove('up');x.setAttribute('aria-label','Face down card')});lock=false},850);
   }
