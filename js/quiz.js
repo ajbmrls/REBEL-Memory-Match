@@ -56,18 +56,17 @@
     var actions = el("div", "swipe");
     var bMyth = btn("btn myth", "← Myth");
     var bFact = btn("btn", "Fact →");
-    actions.append(bMyth, bFact);
+    var nextCard = btn("btn next-in-place", "Next card");
+    nextCard.hidden = true;
+    actions.append(bMyth, bFact, nextCard);   // the next button takes the place of Myth and Fact
     var tip = el("p", "swipe-tip", "Swipe the card or press the left and right arrow keys.");
     var fbBox = el("div");
-    var nextCard = btn("btn ghost", "Next card");
-    nextCard.hidden = true;
-    var nw = el("div", "nextwrap"); nw.appendChild(nextCard);
-    stage.append(meta, deck, actions, tip, fbBox, nw);
+    stage.append(meta, deck, actions, tip, fbBox);
 
     function mount() {
       deck.innerHTML = ""; fbBox.innerHTML = "";
       nextCard.hidden = true; locked = false;
-      bMyth.disabled = false; bFact.disabled = false;
+      bMyth.hidden = false; bFact.hidden = false;
       meta.textContent = "Card " + (i + 1) + " of " + cards.length;
       card = el("div", "qcard", cards[i].t);
       card._x = 0;
@@ -110,7 +109,7 @@
       locked = true;
       var c = cards[i], ok = choice === c.a, dir = choice === "myth" ? -1 : 1;
       hits.push(ok ? 1 : 0);
-      bMyth.disabled = true; bFact.disabled = true;
+      bMyth.hidden = true; bFact.hidden = true;
       card.dataset.dir = choice;
       springTo(card, dir * width * 1.25, { velocity: velocity || 0, response: 0.4, damping: 1, width: width });
       var verdict = c.a === "fact" ? "That one is a fact." : "That one is a myth.";
@@ -118,8 +117,13 @@
       fb.classList.add("in-deck");
       var swap = function () { if (card.parentNode === deck) { deck.removeChild(card); deck.appendChild(fb); } };
       if (RB.reduceMotion()) swap(); else setTimeout(swap, 280);   // result takes the card's place once it has left
-      if (i === cards.length - 1) { keyHandler = null; done(hits); }
-      else { nextCard.hidden = false; nextCard.focus({ preventScroll: true }); }
+      nextCard.hidden = false;
+      if (i === cards.length - 1) {
+        keyHandler = null; done(hits);
+        var nx = $("q-next"); nextCard.textContent = nx.textContent; nx.hidden = true;   // same spot, so the pointer stays put
+        nextCard.onclick = function () { nx.click(); };
+      } else { nextCard.textContent = "Next card"; nextCard.onclick = function () { i++; mount(); }; }
+      nextCard.focus({ preventScroll: true });
     }
 
     keyHandler = function (e) {
@@ -128,7 +132,6 @@
     };
     bMyth.addEventListener("click", function () { decide("myth", -600); });
     bFact.addEventListener("click", function () { decide("fact", 600); });
-    nextCard.addEventListener("click", function () { i++; mount(); });
     mount();
   }
 

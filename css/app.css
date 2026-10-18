@@ -334,3 +334,4 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
 .qr-row .qr { width: 220px; flex: none; }
 .double-box { flex: 1; max-width: 260px; min-width: 0; }
 @media (max-width: 520px) { .qr-row { flex-wrap: wrap; } }
+.swipe .btn.next-in-place { grid-column: 1 / -1; }
