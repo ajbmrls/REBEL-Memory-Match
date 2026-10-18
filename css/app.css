@@ -287,7 +287,7 @@ input[type="text"]:focus, input[type="email"]:focus { border-color: var(--accent
   .tile:hover { transform: none; }
 }
 @media (prefers-contrast: more) { .panel, .qcard, .tile { box-shadow: none; border: 2px solid var(--ink); } }
-@media (max-width: 640px) { .buckets { grid-template-columns: 1fr; } .bar { padding: 10px 14px; } .bar img { height: 22px; } .back kbd { display: none; } }
+@media (max-width: 640px) { .bar { padding: 10px 14px; } .bar img { height: 22px; } .back kbd { display: none; } }
 
 /* Raffle QR */
 .qr { display: block; background: #fff; border-radius: var(--r-md); padding: 14px; width: min(260px, 100%); box-shadow: var(--shadow); transition: transform .35s var(--ease); }
@@ -335,3 +335,46 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
 .double-box { flex: 1; max-width: 260px; min-width: 0; }
 @media (max-width: 520px) { .qr-row { flex-wrap: wrap; } }
 .swipe .btn.next-in-place { grid-column: 1 / -1; }
+
+/* Phones */
+.log-scores b { white-space: nowrap; }
+@media (max-width: 640px) {
+  .qr-row { flex-wrap: wrap; }
+  .qr-row .qr { width: min(240px, 100%); }
+  .double-box { flex: 1 1 100%; max-width: none; }
+  .panel.two .qr-col { order: -1; }   /* the QR is the point of the screen, so it comes first */
+  .panel { padding: 24px 18px; }
+}
+@media (max-width: 520px) {
+  /* Memory Match on a phone: two columns of wide cards so they are big enough to tap and the board still fits. */
+  .mm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mm-card { aspect-ratio: 6 / 5; }
+  .mm-front img { height: 52%; }
+  .mm-front span { font-size: 12cqw; }
+  .mm-head h1 { flex: 1 1 100%; }
+  .mm-head { gap: 10px 16px; }
+  .mm-go { flex: 1; }
+}
+@media (max-width: 520px) {
+  .mm-card { aspect-ratio: 7 / 5; }
+  .mm-front img { height: 50%; }
+  /* Size the board from the screen height so all eight cards stay visible without scrolling. */
+  .mm-wrap { max-width: max(240px, calc(0.7 * (100svh - 312px) + 12px)); }
+}
+@media (max-width: 520px) {
+  /* The win screen has more to say than the board is tall, so it takes the whole screen on a phone. */
+  .mm-win { position: fixed; inset: 0; border-radius: 0; z-index: 15; flex-direction: column-reverse; justify-content: center; padding: 96px 20px 24px; gap: 20px; }
+  .mm-win-copy { max-width: none; width: 100%; }
+  .mm-win .qr { width: min(200px, 60vw); }
+  .mm-double .row { width: 100%; }
+  .mm-double .mm-go { flex: 1; min-width: 0; padding-inline: 12px; }
+}
+@media (max-width: 640px) {
+  /* Keep the three buckets side by side so readings and buckets are on screen together. */
+  .buckets { gap: 8px; }
+  .bucket { padding: 8px; gap: 8px; min-height: 140px; }
+  .bucket-btn { font-size: 17px; padding: 10px 4px; }
+  .bucket-list .reading { font-size: 19px; padding: 8px 4px; text-align: center; }
+  .reading { font-size: 24px; padding: 10px 14px; }
+  .sign { min-height: 76px; font-size: 16px; }
+}
