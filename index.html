@@ -52,6 +52,8 @@ button:focus-visible{outline:3px solid var(--deep);outline-offset:3px}
 .grid:not(.locked) .card:not(.up):active .back{transform:scale(.96)}
 .back{transition:transform .1s ease-out}
 .stage{position:relative}
+button.rdy{position:absolute;left:50%;top:50%;translate:-50% -50%;z-index:2;font-size:clamp(1.6rem,5vw,3rem);padding:.45em 1.6em;min-height:0;box-shadow:0 8px 30px rgba(6,49,15,.25)}
+button.rdy[hidden]{display:none}
 .count{position:absolute;inset:-8px;display:flex;align-items:center;justify-content:center;pointer-events:none;border-radius:20px;background:var(--scrim);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transition:opacity .25s ease}
 .count.on{opacity:1}
 .count b{font-size:clamp(6rem,34vh,18rem);font-weight:700;line-height:1;letter-spacing:0;font-variant-numeric:tabular-nums}
@@ -74,7 +76,7 @@ button:focus-visible{outline:3px solid var(--deep);outline-offset:3px}
     <div class="stats"><span>Time<b id="time">0:00.00</b></span><span>Moves<b id="moves">0</b></span><span>Pairs<b id="pairs">0/4</b></span></div>
     <button class="go" id="go" type="button" disabled>Memorize 7</button>
   </div>
-  <div class="stage"><div class="grid locked" id="grid"></div><div class="count" id="count" aria-live="assertive"><b id="num"></b></div></div>
+  <div class="stage"><div class="grid locked" id="grid"></div><button class="go ready rdy" id="rdy" type="button" hidden>Ready</button><div class="count" id="count" aria-live="assertive"><b id="num"></b></div></div>
 </div>
 <script>
 /* Each pair uses a REBEL illustration (img); without img it falls back to the drawn icon in p. */
@@ -86,12 +88,12 @@ const SET=[
 ];
 const PREVIEW=7,$=id=>document.getElementById(id),grid=$('grid'),go=$('go');
 let open=[],moves=0,pairs=0,lock=true,phase='',t0=0,tick=0,cd=0;
-const count=$('count'),num=$('num');
+const count=$('count'),num=$('num'),rdy=$('rdy');
 function show(t,go){num.className='';void num.offsetWidth;num.textContent=t;num.className='tick'+(go?' go':'')}
 const fmt=ms=>{const c=Math.floor(ms/10),s=Math.floor(c/100);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+'.'+String(c%100).padStart(2,'0')};
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function start(){
-  clearInterval(tick);clearInterval(cd);count.classList.remove('on');go.classList.remove('ready');
+  clearInterval(tick);clearInterval(cd);count.classList.remove('on');go.classList.remove('ready');rdy.hidden=true;go.style.visibility='';
   open=[];moves=0;pairs=0;lock=true;phase='preview';
   $('moves').textContent=0;$('pairs').textContent='0/4';$('time').textContent='0:00.00';
   grid.classList.add('locked');grid.innerHTML='';
@@ -106,20 +108,20 @@ function start(){
     if(--n>0){go.textContent='Memorize '+n;return}
     clearInterval(cd);
     grid.querySelectorAll('.card').forEach(b=>{b.classList.remove('up');b.setAttribute('aria-label','Face down card')});
-    phase='ready';go.disabled=false;go.textContent='Ready';go.classList.add('ready');
+    phase='ready';go.style.visibility='hidden';rdy.hidden=false;
   },1000);
 }
 function ready(){
-  phase='count';go.disabled=true;go.classList.remove('ready');go.textContent='Get set';
+  phase='count';rdy.hidden=true;
   let n=3;count.classList.add('on');show(n);
   cd=setInterval(()=>{
     if(--n>0){show(n);return}
-    clearInterval(cd);show('Go',true);begin();
-    setTimeout(()=>{if(phase!=='count')count.classList.remove('on')},600);
+    clearInterval(cd);show('Go',true);
+    setTimeout(()=>{count.classList.remove('on');setTimeout(()=>{if(phase==='count')begin()},300)},600);
   },1000);
 }
 function begin(){
-  phase='play';lock=false;go.disabled=false;grid.classList.remove('locked');go.textContent='New game';
+  phase='play';lock=false;go.style.visibility='';go.disabled=false;grid.classList.remove('locked');go.textContent='New game';
   t0=performance.now();tick=setInterval(()=>{$('time').textContent=fmt(performance.now()-t0)},31);
 }
 function flip(b){
@@ -135,7 +137,8 @@ function flip(b){
     lock=true;setTimeout(()=>{[a,d].forEach(x=>{x.classList.remove('up');x.setAttribute('aria-label','Face down card')});lock=false},850);
   }
 }
-go.onclick=()=>phase==='ready'?ready():start();
+rdy.onclick=ready;
+go.onclick=start;
 start();
 </script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');</script>
