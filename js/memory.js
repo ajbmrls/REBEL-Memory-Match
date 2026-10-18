@@ -74,6 +74,7 @@
       if (pairs === 4) {
         clearInterval(tick); $("mm-time").textContent = fmt(performance.now() - t0);
         phase = "won"; go.textContent = "Play again";
+        RB.lastMemory = { time: $("mm-time").textContent, moves: moves };
         later(function () {
           $("mm-winScore").textContent = $("mm-time").textContent + " in " + moves + (moves === 1 ? " move" : " moves");
           win.hidden = false;

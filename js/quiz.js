@@ -2,7 +2,7 @@
    A game is run(stage, done, round). done([points...]) adds points and shows the Next button. */
 (function () {
   var $ = RB.$, el = RB.el, btn = RB.btn, CONTENT = window.REBEL_CONTENT;
-  var topic = null, state = null, keyHandler = null;
+  var topic = null, state = null, keyHandler = null, carried = null, doubled = false;
 
   function feedback(ok, title, text, fun) {
     var f = el("div", "fb " + (ok ? "good" : "bad"));
@@ -360,6 +360,11 @@
     $("q-ctaTitle").textContent = cta.title;
     $("q-ctaText").textContent = cta.text;
     $("q-ctaNote").textContent = cta.note;
+    var list = $("q-logScores"); list.innerHTML = "";
+    function item(name, val) { var li = el("li"); li.appendChild(el("span", null, name)); li.appendChild(el("b", null, val)); list.appendChild(li); }
+    if (carried && carried.memory) item("Memory Match", carried.memory.time + " in " + carried.memory.moves + (carried.memory.moves === 1 ? " move" : " moves"));
+    item(topic.title, score + " out of 7");
+    renderDouble();
     var link = $("q-qrLink"); link.href = topic.qrUrl; link.innerHTML = "";
     var qr = el("img"); qr.src = topic.qr; qr.alt = "QR code to log your score and enter the raffle"; qr.width = 260; qr.height = 260; link.appendChild(qr);
     var steps = $("q-steps"); steps.innerHTML = "";
@@ -375,14 +380,35 @@
     RB.send(row);
   }
 
+  function renderDouble() {
+    var b = $("q-double");
+    b.disabled = doubled; b.classList.toggle("doubled", doubled);
+    b.textContent = doubled ? "\u2713 Entries doubled" : "Double your entries";
+    $("q-doubleNote").textContent = doubled ? "Your entries are doubled. Scan the code to log your score." : "Sign up for a free REBEL program to double your chances.";
+  }
+  var sheet = $("q-sheet");
+  function openSheet() {
+    var p = topic.program;
+    $("q-sheetText").textContent = "Scan the code to sign up for the REBEL " + p.name + " program. Then come back and tap done.";
+    var l = $("q-progLink"); l.href = p.url; l.innerHTML = "";
+    var im = el("img"); im.src = p.qr; im.alt = "QR code to sign up for the REBEL " + p.name + " program"; im.width = 260; im.height = 260; l.appendChild(im);
+    sheet.showModal();
+    // The sheet grows out of the button that opened it.
+    var r = $("q-double").getBoundingClientRect(), s = sheet.getBoundingClientRect();
+    sheet.style.transformOrigin = (r.left + r.width / 2 - s.left) + "px " + (r.top + r.height / 2 - s.top) + "px";
+    $("q-sheetDone").focus({ preventScroll: true });
+  }
+  function closeSheet() { if (sheet.open) sheet.close(); }
+
   function reset() {
     state = { r: 0, pts: [], extra: {}, sid: RB.newId() };
     show("game");
     startRound();
   }
 
-  function open(id) {
+  function open(id, carry) {
     topic = CONTENT[id];
+    carried = carry || null; doubled = false; closeSheet();
     state = { r: 0, pts: [], extra: {}, sid: RB.newId() };
     keyHandler = null;
     $("q-when").textContent = topic.when;
@@ -395,6 +421,10 @@
 
   $("q-start").addEventListener("click", reset);
   $("q-again").addEventListener("click", reset);
+  $("q-double").addEventListener("click", openSheet);
+  $("q-sheetDone").addEventListener("click", function () { doubled = true; closeSheet(); renderDouble(); $("q-qrLink").focus({ preventScroll: true }); });
+  $("q-sheetClose").addEventListener("click", closeSheet);
+  sheet.addEventListener("click", function (e) { if (e.target === sheet) closeSheet(); });   // tap outside to dismiss
   $("q-menu").addEventListener("click", function () { location.hash = ""; });
   $("q-next").addEventListener("click", function () {
     if (state.r < topic.rounds.length - 1) { state.r++; startRound(); } else finish();
@@ -404,6 +434,6 @@
     open: open,
     title: function () { return topic ? topic.title : ""; },
     onKey: function (e) { if (keyHandler) keyHandler(e); },
-    stop: function () { keyHandler = null; }
+    stop: function () { keyHandler = null; closeSheet(); }
   };
 })();

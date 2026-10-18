@@ -12,6 +12,7 @@ window.REBEL_CONTENT = {
       { max: 5, name: "Pressure Spotter", text: "You caught a lot of it. A few myths slipped through, and you now have the answers." },
       { max: 7, name: "Numbers Master", text: "You know your numbers. Pass it on to someone who doesn't." }
     ],
+    program: { qr: "assets/qr-program-hypertension.svg", url: "https://rebel-eap.as.me/hp", name: "hypertension" },
     qr: "assets/qr-hypertension.svg",
     qrUrl: "https://rebel.typeform.com/Accenture?utm_source=OCT19BOOTH",
     cta: {
@@ -68,6 +69,7 @@ window.REBEL_CONTENT = {
       { max: 5, name: "Sugar Sleuth", text: "You spotted a lot of it. A few myths slipped through, and you now have the answers." },
       { max: 7, name: "Glucose Genius", text: "You know your stuff. Pass it on to someone who doesn't." }
     ],
+    program: { qr: "assets/qr-program-diabetes.svg", url: "https://rebel-eap.as.me/dp", name: "diabetes" },
     qr: "assets/qr-diabetes.svg",
     qrUrl: "https://rebel.typeform.com/acndiabetes?utm_source=OCT19BOOTH",
     cta: {

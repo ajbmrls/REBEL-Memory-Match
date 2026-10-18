@@ -139,8 +139,14 @@
           <div class="count">REBEL merch raffle</div>
           <h2 class="h2">Scan to enter the raffle</h2>
           <p class="hint">Scan the code to log your score and enter the draw for REBEL merch.</p>
-          <a class="qr" id="q-qrLink" href="#" target="_blank" rel="noopener"></a>
-          <p class="note double">Sign up for a free REBEL program and double your chances.</p>
+          <ul class="log-scores" id="q-logScores"></ul>
+          <div class="qr-row">
+            <a class="qr" id="q-qrLink" href="#" target="_blank" rel="noopener"></a>
+            <div class="double-box">
+              <button class="btn purple" id="q-double" type="button">Double your entries</button>
+              <p class="hint small" id="q-doubleNote">Sign up for a free REBEL program to double your chances.</p>
+            </div>
+          </div>
           <div class="row">
             <button class="btn" type="button" id="q-again">Play again</button>
             <button class="btn ghost" type="button" id="q-menu">All games</button>
@@ -148,6 +154,17 @@
         </div>
       </div>
     </section>
+
+    <dialog class="sheet" id="q-sheet" aria-labelledby="q-sheetTitle">
+      <div class="sheet-in">
+        <h2 class="h2" id="q-sheetTitle">Scan to sign up</h2>
+        <p class="hint" id="q-sheetText"></p>
+        <a class="qr" id="q-progLink" href="#" target="_blank" rel="noopener"></a>
+        <p class="note">Programs are for people with a diagnosis.</p>
+        <button class="btn purple" id="q-sheetDone" type="button">Done signing up? Your entries are now doubled!</button>
+        <button class="btn ghost" id="q-sheetClose" type="button">Not now</button>
+      </div>
+    </dialog>
   </div>
 
 </main>
