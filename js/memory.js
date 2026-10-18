@@ -8,7 +8,7 @@
     { k: "Move", img: "illustrations/runner.png" }
   ];
   var PREVIEW = 7;
-  var grid = $("mm-grid"), go = $("mm-go"), rdy = $("mm-ready"), count = $("mm-count"), num = $("mm-num");
+  var grid = $("mm-grid"), go = $("mm-go"), rdy = $("mm-ready"), win = $("mm-win"), count = $("mm-count"), num = $("mm-num");
   var open = [], moves = 0, pairs = 0, lock = true, phase = "", t0 = 0, tick = 0, cd = 0, timers = [];
 
   function later(fn, ms) { var id = setTimeout(fn, ms); timers.push(id); return id; }
@@ -21,7 +21,7 @@
 
   function start() {
     clearAll();
-    count.classList.remove("on"); rdy.hidden = true; go.style.visibility = "";
+    count.classList.remove("on"); rdy.hidden = true; win.hidden = true; go.style.visibility = "";
     open = []; moves = 0; pairs = 0; lock = true; phase = "preview";
     $("mm-moves").textContent = 0; $("mm-pairs").textContent = "0/4"; $("mm-time").textContent = "0:00.00";
     grid.classList.add("locked"); grid.innerHTML = "";
@@ -74,6 +74,11 @@
       if (pairs === 4) {
         clearInterval(tick); $("mm-time").textContent = fmt(performance.now() - t0);
         phase = "won"; go.textContent = "Play again";
+        later(function () {
+          $("mm-winScore").textContent = $("mm-time").textContent + " in " + moves + (moves === 1 ? " move" : " moves");
+          win.hidden = false;
+          try { $("mm-again").focus({ preventScroll: true }); } catch (e) {}
+        }, 700);
       }
     } else {
       lock = true;
@@ -86,5 +91,6 @@
 
   rdy.onclick = ready;
   go.onclick = start;
+  $("mm-again").onclick = start;
   RB.memory = { start: start, stop: function () { clearAll(); phase = ""; } };
 })();

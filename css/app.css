@@ -285,3 +285,18 @@ input[type="text"]:focus, input[type="email"]:focus { border-color: var(--accent
 }
 @media (prefers-contrast: more) { .panel, .qcard, .tile { box-shadow: none; border: 2px solid var(--ink); } }
 @media (max-width: 640px) { .buckets { grid-template-columns: 1fr; } .bar { padding: 10px 14px; } .bar img { height: 22px; } .back kbd { display: none; } }
+
+/* Raffle QR */
+.qr { display: block; background: #fff; border-radius: var(--r-md); padding: 14px; width: min(260px, 100%); box-shadow: var(--shadow); transition: transform .35s var(--ease); }
+.qr:hover { transform: scale(1.02); }
+.qr img { display: block; width: 100%; height: auto; image-rendering: crisp-edges; }
+.note.double { font-size: 16px; font-weight: 600; color: var(--ink); background: color-mix(in srgb, var(--accent) 14%, var(--fill)); }
+.qr-col { align-items: flex-start; }
+.mm-win { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; gap: clamp(20px, 4vw, 48px); padding: clamp(16px, 3vw, 40px); border-radius: 20px; background: color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); flex-wrap: wrap; overflow: auto; }
+.mm-win[hidden] { display: none; }
+.mm-win-copy { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; max-width: 36ch; }
+.mm-win h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: .95; text-transform: uppercase; color: var(--accent); }
+.mm-win-score { font-family: var(--display); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.mm-win .qr { width: clamp(150px, 24vh, 240px); }
+@media (prefers-reduced-transparency: reduce) { .mm-win { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg); } }
+@media (prefers-reduced-motion: reduce) { .qr { transition: none; } }

@@ -310,7 +310,7 @@
   var RUN = { myth: runMyth, crowd: runCrowd, slider: runSlider, sort: runSort, signs: runSigns };
 
   /* ---------- Flow ---------- */
-  var sections = ["intro", "game", "result", "thanks"];
+  var sections = ["intro", "game", "result"];
   function show(name) {
     sections.forEach(function (s) { $("q-" + s).hidden = s !== name; });
     window.scrollTo(0, 0);
@@ -360,7 +360,7 @@
     $("q-ctaTitle").textContent = cta.title;
     $("q-ctaText").textContent = cta.text;
     $("q-ctaNote").textContent = cta.note;
-    $("q-raffleNote").textContent = "Every completed game gets one entry, whatever the score. " + topic.raffleNote + " Your name and email stay separate from your answers.";
+    $("q-qr").src = topic.qr; $("q-qrLink").href = topic.qrUrl;
     var steps = $("q-steps"); steps.innerHTML = "";
     cta.links.forEach(function (l) {
       var a = el("a"); a.href = l.href; a.target = "_blank"; a.rel = "noopener";
@@ -374,20 +374,8 @@
     RB.send(row);
   }
 
-  function thanks(title, text, preview) {
-    $("q-thanksTitle").textContent = title;
-    $("q-thanksText").textContent = text;
-    $("q-preview").hidden = !preview;
-    show("thanks");
-    $("q-thanksTitle").focus({ preventScroll: true });
-  }
-
   function reset() {
     state = { r: 0, pts: [], extra: {}, sid: RB.newId() };
-    $("q-form").reset();
-    $("q-err").textContent = "";
-    $("q-rbtn").disabled = false;
-    $("q-rbtn").textContent = "Enter the raffle";
     show("game");
     startRound();
   }
@@ -409,27 +397,6 @@
   $("q-menu").addEventListener("click", function () { location.hash = ""; });
   $("q-next").addEventListener("click", function () {
     if (state.r < topic.rounds.length - 1) { state.r++; startRound(); } else finish();
-  });
-  $("q-skip").addEventListener("click", function () {
-    thanks("Thanks for playing.", "Share it with a coworker who might not know the early signs.", !RB.CONFIG.endpoint);
-  });
-  $("q-form").addEventListener("submit", function (ev) {
-    ev.preventDefault();
-    var name = $("q-name").value.trim(), email = $("q-email").value.trim(), err = $("q-err");
-    if (!name) { err.textContent = "Enter your full name."; $("q-name").focus(); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = "Enter a valid work email, like name@company.com."; $("q-email").focus(); return; }
-    err.textContent = "";
-    $("q-rbtn").disabled = true;
-    $("q-rbtn").textContent = "Sending...";
-    // Raffle row has no score and no session id, so it can't be matched to answers.
-    RB.send({ type: "raffle", topic: topic.id, name: name, email: email, submittedAt: new Date().toISOString() }).then(function (r) {
-      if (r.ok) thanks("You're in the raffle.", topic.raffleNote, !!r.preview);
-      else {
-        err.textContent = "That didn't go through. Check your connection and try again.";
-        $("q-rbtn").disabled = false;
-        $("q-rbtn").textContent = "Enter the raffle";
-      }
-    });
   });
 
   RB.quiz = {

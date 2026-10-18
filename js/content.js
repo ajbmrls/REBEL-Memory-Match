@@ -12,7 +12,8 @@ window.REBEL_CONTENT = {
       { max: 5, name: "Pressure Spotter", text: "You caught a lot of it. A few myths slipped through, and you now have the answers." },
       { max: 7, name: "Numbers Master", text: "You know your numbers. Pass it on to someone who doesn't." }
     ],
-    raffleNote: "Winners are announced on the internal channel.",
+    qr: "assets/qr-hypertension.svg",
+    qrUrl: "https://rebel.typeform.com/Accenture?utm_source=OCT19BOOTH",
     cta: {
       title: "Know your numbers early",
       text: "High blood pressure often goes unnoticed until it causes a stroke or heart disease. A quick check is the fastest way to know.",
@@ -67,7 +68,8 @@ window.REBEL_CONTENT = {
       { max: 5, name: "Sugar Sleuth", text: "You spotted a lot of it. A few myths slipped through, and you now have the answers." },
       { max: 7, name: "Glucose Genius", text: "You know your stuff. Pass it on to someone who doesn't." }
     ],
-    raffleNote: "Winners are drawn within a week of November 14 and announced on the internal channel.",
+    qr: "assets/qr-diabetes.svg",
+    qrUrl: "https://rebel.typeform.com/acndiabetes?utm_source=OCT19BOOTH",
     cta: {
       title: "Early action starts with a number",
       text: "In the Philippines, 53.5 percent of adults with diabetes don't know they have it. A quick check is the fastest way to know.",

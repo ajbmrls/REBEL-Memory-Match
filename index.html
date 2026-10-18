@@ -56,7 +56,7 @@
         <span class="tile-meta">4 games, about 3 minutes <kbd>3</kbd></span>
       </a>
     </div>
-    <p class="meta">Finish either Know Your game to enter the REBEL merch raffle.</p>
+    <p class="meta">Finish any game, then scan the code to enter the REBEL merch raffle.</p>
   </section>
 
   <!-- Memory Match -->
@@ -71,6 +71,16 @@
         <div class="mm-grid locked" id="mm-grid"></div>
         <div class="mm-count" id="mm-count" aria-live="assertive"><b id="mm-num"></b></div>
         <button class="mm-go mm-ready" id="mm-ready" type="button" hidden>Ready</button>
+        <div class="mm-win" id="mm-win" hidden>
+          <div class="mm-win-copy">
+            <h2>All pairs found</h2>
+            <p class="mm-win-score" id="mm-winScore"></p>
+            <p class="hint">Scan the code to log your score and enter the draw for REBEL merch.</p>
+            <p class="note double">Sign up for a free REBEL program and double your chances.</p>
+            <button class="mm-go" id="mm-again" type="button">Play again</button>
+          </div>
+          <a class="qr" href="https://rebel.typeform.com/to/MnuskhU7?typeform-source=qrcode-button" target="_blank" rel="noopener"><img src="assets/qr-memory.svg" alt="QR code to log your score and enter the raffle" width="260" height="260"></a>
+        </div>
       </div>
     </div>
   </section>
@@ -88,7 +98,7 @@
         </div>
         <img class="art" src="assets/hero.jpg" alt="" width="900" height="704">
       </div>
-      <p class="meta">4 games, 7 points. Finish to enter the REBEL merch raffle.</p>
+      <p class="meta">4 games, 7 points. Finish, then scan the code to enter the REBEL merch raffle.</p>
     </section>
 
     <section id="q-game" hidden>
@@ -119,36 +129,16 @@
           <div class="steps" id="q-steps"></div>
           <p class="note" id="q-ctaNote"></p>
         </div>
-        <div class="col">
+        <div class="col qr-col">
           <div class="count">REBEL merch raffle</div>
-          <h2 class="h2">Finished? You're in the draw.</h2>
-          <p class="hint" id="q-raffleNote"></p>
-          <form id="q-form" novalidate>
-            <label for="q-name">Full name
-              <input type="text" id="q-name" name="name" autocomplete="name" required>
-            </label>
-            <label for="q-email">Work email
-              <input type="email" id="q-email" name="email" autocomplete="email" inputmode="email" required>
-            </label>
-            <p class="err" id="q-err" role="alert"></p>
-            <div class="row">
-              <button class="btn" type="submit" id="q-rbtn">Enter the raffle</button>
-              <button class="btn ghost" type="button" id="q-skip">Skip</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <section id="q-thanks" hidden>
-      <div class="panel">
-        <div class="count">All done</div>
-        <h2 class="h2" id="q-thanksTitle" tabindex="-1"></h2>
-        <p id="q-thanksText"></p>
-        <p class="note" id="q-preview" hidden>Preview mode: nothing was sent to a Google Sheet. Set RB.CONFIG.endpoint in js/core.js to start saving responses.</p>
-        <div class="row">
-          <button class="btn" type="button" id="q-again">Play again</button>
-          <button class="btn ghost" type="button" id="q-menu">All games</button>
+          <h2 class="h2">Scan to enter the raffle</h2>
+          <p class="hint">Scan the code to log your score and enter the draw for REBEL merch.</p>
+          <a class="qr" id="q-qrLink" href="#" target="_blank" rel="noopener"><img id="q-qr" src="" alt="QR code to log your score and enter the raffle" width="260" height="260"></a>
+          <p class="note double">Sign up for a free REBEL program and double your chances.</p>
+          <div class="row">
+            <button class="btn" type="button" id="q-again">Play again</button>
+            <button class="btn ghost" type="button" id="q-menu">All games</button>
+          </div>
         </div>
       </div>
     </section>
