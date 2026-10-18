@@ -108,8 +108,9 @@ body[data-view="memory"] footer { display: none; }
 .tile { background: var(--surface); color: var(--ink); text-decoration: none; border-radius: var(--r-lg); box-shadow: var(--shadow); padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 10px; transition: transform .35s var(--ease), box-shadow .35s var(--ease); }
 .tile:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
 .tile:active { transform: scale(.98); transition-duration: .1s; }
-.tile-art { background: var(--fill); border-radius: var(--r-md); height: clamp(120px, 18vh, 190px); display: grid; place-items: center; overflow: hidden; margin-bottom: 8px; }
-.tile-art > img { height: 86%; width: auto; max-width: 90%; object-fit: contain; transition: transform .5s var(--ease); }
+.tile { --art-h: clamp(120px, 18vh, 190px); }
+.tile-art { background: var(--fill); border-radius: var(--r-md); height: var(--art-h); flex: none; display: grid; place-items: center; overflow: hidden; margin-bottom: 8px; }
+.tile-art > img { height: calc(var(--art-h) * .86); width: 90%; object-fit: contain; transition: transform .5s var(--ease); }
 .tile:hover .tile-art > img { transform: scale(1.05); }
 .tile h2 { font-size: clamp(30px, 3vw, 38px); line-height: .98; letter-spacing: -0.01em; color: var(--accent); }
 .tile p { color: var(--muted); font-size: 16px; line-height: 1.4; flex: 1; }
@@ -378,3 +379,4 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
   .reading { font-size: 24px; padding: 10px 14px; }
   .sign { min-height: 76px; font-size: 16px; }
 }
+@media (max-width: 760px) { .tile { --art-h: 170px; } }
