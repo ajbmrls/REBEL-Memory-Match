@@ -20,8 +20,7 @@ window.REBEL_CONTENT = {
       text: "High blood pressure often goes unnoticed until it causes a stroke or heart disease. A quick check is the fastest way to know.",
       links: [
         { href: "https://rebel-eap.as.me/hp", title: "Book a REBEL hypertension consult", sub: "Talk it through with a health professional" }
-      ],
-      note: "REBEL consults are for people with a diagnosis. Not diagnosed yet? Get your blood pressure checked first, for example at your Konsulta clinic."
+      ]
     },
     myths: [
       { id: "feel", t: "You'll feel it when your blood pressure is high.", a: "myth",
@@ -78,8 +77,7 @@ window.REBEL_CONTENT = {
       links: [
         { href: "https://worlddiabetesday.org/", title: "Test your type 2 diabetes risk", sub: "World Diabetes Day, International Diabetes Federation" },
         { href: "https://rebel-eap.as.me/dp", title: "Book a REBEL diabetes consult", sub: "Talk it through with a health professional" }
-      ],
-      note: "REBEL consults are for people with a diagnosis. Not diagnosed yet? Get screened first, for example at your Konsulta clinic."
+      ]
     },
     myths: [
       { id: "nosymptoms", t: "No symptoms means no diabetes.", a: "myth",

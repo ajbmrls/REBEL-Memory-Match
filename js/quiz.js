@@ -359,7 +359,6 @@
     $("q-labelText").textContent = lab.text;
     $("q-ctaTitle").textContent = cta.title;
     $("q-ctaText").textContent = cta.text;
-    $("q-ctaNote").textContent = cta.note;
     var list = $("q-logScores"); list.innerHTML = "";
     function item(name, val) { var li = el("li"); li.appendChild(el("span", null, name)); li.appendChild(el("b", null, val)); list.appendChild(li); }
     if (carried && carried.memory) item("Memory Match", carried.memory.time + " in " + carried.memory.moves + (carried.memory.moves === 1 ? " move" : " moves"));
