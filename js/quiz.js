@@ -360,7 +360,8 @@
     $("q-ctaTitle").textContent = cta.title;
     $("q-ctaText").textContent = cta.text;
     $("q-ctaNote").textContent = cta.note;
-    $("q-qr").src = topic.qr; $("q-qrLink").href = topic.qrUrl;
+    var link = $("q-qrLink"); link.href = topic.qrUrl; link.innerHTML = "";
+    var qr = el("img"); qr.src = topic.qr; qr.alt = "QR code to log your score and enter the raffle"; qr.width = 260; qr.height = 260; link.appendChild(qr);
     var steps = $("q-steps"); steps.innerHTML = "";
     cta.links.forEach(function (l) {
       var a = el("a"); a.href = l.href; a.target = "_blank"; a.rel = "noopener";
