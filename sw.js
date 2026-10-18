@@ -1,6 +1,6 @@
 // Caches the games, their art and the font on first load so everything runs offline afterwards.
 // Bump CACHE on every deploy or installed devices keep the old copy.
-const CACHE='rebel-games-v6';
+const CACHE='rebel-games-v7';
 const FILES=['./','index.html','icon.png','manifest.webmanifest','css/app.css','js/content.js','js/core.js','js/memory.js','js/quiz.js','js/app.js','assets/hero.jpg',
   'illustrations/rebel-wordmark-black.png','illustrations/rebel-wordmark-white.png','illustrations/stressed-at-desk.png','illustrations/talking-it-through.png','illustrations/strong-mind.png','illustrations/runner.png','illustrations/coach-consultation.png','illustrations/team-cheering.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()))});

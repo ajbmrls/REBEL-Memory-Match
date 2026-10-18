@@ -114,7 +114,10 @@
       card.dataset.dir = choice;
       springTo(card, dir * width * 1.25, { velocity: velocity || 0, response: 0.4, damping: 1, width: width });
       var verdict = c.a === "fact" ? "That one is a fact." : "That one is a myth.";
-      fbBox.appendChild(feedback(ok, ok ? "Nailed it" : "Not quite", verdict + " " + c.e, c.f));
+      var fb = feedback(ok, ok ? "Nailed it" : "Not quite", verdict + " " + c.e, c.f);
+      fb.classList.add("in-deck");
+      var swap = function () { if (card.parentNode === deck) { deck.removeChild(card); deck.appendChild(fb); } };
+      if (RB.reduceMotion()) swap(); else setTimeout(swap, 280);   // result takes the card's place once it has left
       if (i === cards.length - 1) { keyHandler = null; done(hits); }
       else { nextCard.hidden = false; nextCard.focus({ preventScroll: true }); }
     }
