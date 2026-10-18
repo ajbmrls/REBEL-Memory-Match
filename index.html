@@ -5,142 +5,164 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="REBEL Match">
+<meta name="apple-mobile-web-app-title" content="REBEL Games">
+<meta name="description" content="REBEL games: Memory Match, Know Your Hypertension and Know Your Diabetes.">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>REBEL Memory Match</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap">
-<style>
-/* Layout: one centered column sized to fit the screen height, so the 4x2 grid never scrolls on a tablet. */
-:root{
-  --blue:#23609A; --ink:#1F2A36; --bg:#DEEAF1; --surface:#ffffff; --muted:#4A5A6A; --line:#B9D0E0; --deep:#23609A; --green:#34c759; --on-green:#06310f; --scrim:rgba(222,234,241,.72);
-  --font:"Barlow Condensed","Trade Gothic Next Condensed","Arial Narrow",system-ui,sans-serif;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ink:#eaf2fa;--bg:#0e1c2a;--surface:#ffffff;--muted:#9db4c9;--line:#284259;--deep:#97BFE2;--green:#30d158;--scrim:rgba(14,28,42,.72);color-scheme:dark}}
-:root[data-theme="dark"]{--ink:#eaf2fa;--bg:#0e1c2a;--surface:#ffffff;--muted:#9db4c9;--line:#284259;--deep:#97BFE2;--green:#30d158;--scrim:rgba(14,28,42,.72);color-scheme:dark}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);padding-inline:16px;padding-block:20px;-webkit-tap-highlight-color:transparent}
-.wrap{width:100%;max-width:max(300px,min(1100px,calc((100vh - 230px) * 1.5)));margin-inline:auto;display:flex;flex-direction:column;gap:clamp(12px,2vh,20px)}
-header{display:flex;align-items:center;gap:14px}
-header img{height:clamp(22px,3.6vw,36px);width:auto;flex:none}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header img{filter:brightness(0) invert(1)}}
-:root[data-theme="dark"] header img{filter:brightness(0) invert(1)}
-h1{margin:0;font-size:clamp(1.6rem,4.6vw,2.8rem);font-weight:700;text-transform:uppercase;line-height:1;letter-spacing:.02em;color:var(--deep);flex:1;min-width:0;text-align:right}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.stats{display:flex;gap:clamp(14px,3vw,28px);font-size:clamp(.85rem,1.7vw,1.05rem);text-transform:uppercase;letter-spacing:.2em;color:var(--muted);font-weight:600}
-.stats span{display:flex;flex-direction:column;gap:2px}
-.stats span:first-child{min-width:7ch}
-.stats b{color:var(--ink);font-size:clamp(1.6rem,3.8vw,2.4rem);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:0;line-height:1}
-button.go{font:inherit;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:clamp(1rem,2.2vw,1.3rem);background:var(--blue);color:#fff;border:0;border-radius:999px;padding:14px 26px;min-height:48px;min-width:150px;cursor:pointer;touch-action:manipulation;font-variant-numeric:tabular-nums}
-button.go{transition:transform .1s ease-out,background-color .2s ease}
-button.go:active:not(:disabled){transform:scale(.96)}
-button.go.ready{background:var(--green);color:var(--on-green)}
-button.go:disabled{background:var(--line);color:var(--muted);cursor:default}
-button:focus-visible{outline:3px solid var(--deep);outline-offset:3px}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.8vw,18px);perspective:1200px}
-.card{aspect-ratio:3/4;border:0;padding:0;background:none;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,.9,.3,1);border-radius:clamp(10px,1.6vw,18px);font:inherit;color:inherit;touch-action:manipulation;container-type:inline-size}
-.card.up{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;border-radius:inherit;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5cqw;overflow:hidden}
-.back{background:var(--blue) url(illustrations/rebel-wordmark-white.png) center/62% auto no-repeat}
-.front{background:var(--surface);border:2px solid #B9D0E0;transform:rotateY(180deg);color:#23609A}
-.front svg{width:50%;height:auto}
-.front img{width:78%;height:56%;object-fit:contain}
-.front svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.front span{font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14cqw;line-height:1;color:#23609A}
-.card.done .front{background:var(--green);border-color:var(--green);color:var(--on-green);animation:pop .4s cubic-bezier(.2,.8,.2,1)}
-.card.done .front span{color:var(--on-green)}
-@keyframes pop{0%{transform:rotateY(180deg) scale(1)}45%{transform:rotateY(180deg) scale(1.06)}100%{transform:rotateY(180deg) scale(1)}}
-.grid:not(.locked) .card:not(.up):active .back{transform:scale(.96)}
-.back{transition:transform .1s ease-out}
-.stage{position:relative}
-button.rdy{position:absolute;left:50%;top:50%;translate:-50% -50%;z-index:2;font-size:clamp(1.6rem,5vw,3rem);padding:.45em 1.6em;min-height:0;box-shadow:0 8px 30px rgba(6,49,15,.25)}
-button.rdy[hidden]{display:none}
-.count{position:absolute;inset:-8px;display:flex;align-items:center;justify-content:center;pointer-events:none;border-radius:20px;background:var(--scrim);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transition:opacity .25s ease}
-.count.on{opacity:1}
-.count b{font-size:clamp(6rem,34vh,18rem);font-weight:700;line-height:1;letter-spacing:0;font-variant-numeric:tabular-nums}
-.count b.tick{animation:tick .9s cubic-bezier(.2,.8,.2,1) both}
-.count b.go{color:var(--green);text-transform:uppercase}
-@keyframes tick{0%{transform:scale(.7);opacity:0}25%{transform:scale(1);opacity:1}80%{opacity:1}100%{transform:scale(1.04);opacity:.0}}
-@media (prefers-reduced-transparency:reduce){.count{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bg)}}
-.grid.locked .card,.card.done{cursor:default}
-@media (prefers-reduced-motion:reduce){.card,.back,button.go{transition:none}.card.done .front,.count b.tick{animation:none}}
-</style>
-<style>body{margin:0}img{max-width:100%}</style>
+<title>REBEL Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="css/app.css">
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <img src="illustrations/rebel-wordmark-black.png" alt="REBEL">
-    <h1>Memory Match</h1>
-  </header>
-  <div class="bar">
-    <div class="stats"><span>Time<b id="time">0:00.00</b></span><span>Moves<b id="moves">0</b></span><span>Pairs<b id="pairs">0/4</b></span></div>
-    <button class="go" id="go" type="button" disabled>Memorize 7</button>
+<body data-view="menu">
+
+<header class="bar">
+  <a class="brand" href="#" aria-label="REBEL games, all games"><img src="illustrations/rebel-wordmark-black.png" alt="REBEL" width="513" height="107"></a>
+  <button class="back" id="backBtn" type="button" hidden><span aria-hidden="true">&lsaquo;</span> All games <kbd>Esc</kbd></button>
+</header>
+
+<main class="wrap" id="main">
+
+  <!-- Menu -->
+  <section class="view" id="v-menu" aria-labelledby="menuTitle">
+    <div class="hero">
+      <div class="copy">
+        <h1 id="menuTitle" tabindex="-1">Pick a game</h1>
+        <p class="lede">Three quick ways to play. Choose one to start.</p>
+      </div>
+      <img class="art" src="assets/hero.jpg" alt="" width="900" height="704">
+    </div>
+    <div class="tiles">
+      <a class="tile" href="#memory">
+        <div class="tile-art mm-art" aria-hidden="true">
+          <div class="mini back"><img src="illustrations/rebel-wordmark-white.png" alt=""></div>
+          <div class="mini front"><img src="illustrations/runner.png" alt=""></div>
+        </div>
+        <h2>Memory Match</h2>
+        <p>Memorize eight cards, then find the four pairs against the clock.</p>
+        <span class="tile-meta">About 1 minute <kbd>1</kbd></span>
+      </a>
+      <a class="tile" href="#hypertension">
+        <div class="tile-art" aria-hidden="true"><img src="illustrations/coach-consultation.png" alt=""></div>
+        <h2>Know Your Hypertension</h2>
+        <p>Four quick games about blood pressure. Some answers will surprise you.</p>
+        <span class="tile-meta">4 games, about 3 minutes <kbd>2</kbd></span>
+      </a>
+      <a class="tile" href="#diabetes">
+        <div class="tile-art" aria-hidden="true"><img src="illustrations/team-cheering.png" alt=""></div>
+        <h2>Know Your Diabetes</h2>
+        <p>Four quick games about diabetes. Early action starts with knowing.</p>
+        <span class="tile-meta">4 games, about 3 minutes <kbd>3</kbd></span>
+      </a>
+    </div>
+    <p class="meta">Finish either Know Your game to enter the REBEL merch raffle.</p>
+  </section>
+
+  <!-- Memory Match -->
+  <section class="view mm" id="v-memory" aria-labelledby="mm-title" hidden>
+    <div class="mm-wrap">
+      <div class="mm-head">
+        <h1 id="mm-title" tabindex="-1">Memory Match</h1>
+        <div class="mm-stats"><span>Time<b id="mm-time">0:00.00</b></span><span>Moves<b id="mm-moves">0</b></span><span>Pairs<b id="mm-pairs">0/4</b></span></div>
+        <button class="mm-go" id="mm-go" type="button" disabled>Memorize 7</button>
+      </div>
+      <div class="mm-stage">
+        <div class="mm-grid locked" id="mm-grid"></div>
+        <div class="mm-count" id="mm-count" aria-live="assertive"><b id="mm-num"></b></div>
+        <button class="mm-go mm-ready" id="mm-ready" type="button" hidden>Ready</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz (Know Your ...) -->
+  <div class="view" id="v-quiz" hidden>
+
+    <section id="q-intro" aria-labelledby="q-introTitle">
+      <div class="hero">
+        <div class="copy">
+          <div class="when" id="q-when"></div>
+          <h1 id="q-introTitle" tabindex="-1"></h1>
+          <p class="lede" id="q-lede"></p>
+          <button class="btn" id="q-start" type="button">Start playing</button>
+        </div>
+        <img class="art" src="assets/hero.jpg" alt="" width="900" height="704">
+      </div>
+      <p class="meta">4 games, 7 points. Finish to enter the REBEL merch raffle.</p>
+    </section>
+
+    <section id="q-game" hidden>
+      <div class="panel game">
+        <aside class="rail">
+          <div class="progress" id="q-progress" aria-hidden="true"></div>
+          <div class="count" id="q-count"></div>
+          <h2 class="round-title" id="q-roundTitle" tabindex="-1"></h2>
+          <p class="hint" id="q-hint"></p>
+        </aside>
+        <div class="body">
+          <div class="stage" id="q-stage" aria-live="polite"></div>
+          <div class="nextwrap"><button class="btn" id="q-next" type="button" hidden>Next game</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="q-result" hidden>
+      <div class="panel two">
+        <div class="col">
+          <div class="count">Your result</div>
+          <div class="score"><b id="q-score">0</b><span>out of 7</span></div>
+          <div class="badge" id="q-label"></div>
+          <p id="q-labelText"></p>
+          <hr>
+          <h2 class="h2" id="q-ctaTitle"></h2>
+          <p id="q-ctaText"></p>
+          <div class="steps" id="q-steps"></div>
+          <p class="note" id="q-ctaNote"></p>
+        </div>
+        <div class="col">
+          <div class="count">REBEL merch raffle</div>
+          <h2 class="h2">Finished? You're in the draw.</h2>
+          <p class="hint" id="q-raffleNote"></p>
+          <form id="q-form" novalidate>
+            <label for="q-name">Full name
+              <input type="text" id="q-name" name="name" autocomplete="name" required>
+            </label>
+            <label for="q-email">Work email
+              <input type="email" id="q-email" name="email" autocomplete="email" inputmode="email" required>
+            </label>
+            <p class="err" id="q-err" role="alert"></p>
+            <div class="row">
+              <button class="btn" type="submit" id="q-rbtn">Enter the raffle</button>
+              <button class="btn ghost" type="button" id="q-skip">Skip</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="q-thanks" hidden>
+      <div class="panel">
+        <div class="count">All done</div>
+        <h2 class="h2" id="q-thanksTitle" tabindex="-1"></h2>
+        <p id="q-thanksText"></p>
+        <p class="note" id="q-preview" hidden>Preview mode: nothing was sent to a Google Sheet. Set RB.CONFIG.endpoint in js/core.js to start saving responses.</p>
+        <div class="row">
+          <button class="btn" type="button" id="q-again">Play again</button>
+          <button class="btn ghost" type="button" id="q-menu">All games</button>
+        </div>
+      </div>
+    </section>
   </div>
-  <div class="stage"><div class="grid locked" id="grid"></div><button class="go ready rdy" id="rdy" type="button" hidden>Ready</button><div class="count" id="count" aria-live="assertive"><b id="num"></b></div></div>
-</div>
-<script>
-/* Each pair uses a REBEL illustration (img); without img it falls back to the drawn icon in p. */
-const SET=[
- {k:'Stress less',img:'illustrations/stressed-at-desk.png'},
- {k:'Talk it out',img:'illustrations/talking-it-through.png'},
- {k:'Healthy mind',img:'illustrations/strong-mind.png'},
- {k:'Move',img:'illustrations/runner.png'}
-];
-const PREVIEW=7,$=id=>document.getElementById(id),grid=$('grid'),go=$('go');
-let open=[],moves=0,pairs=0,lock=true,phase='',t0=0,tick=0,cd=0;
-const count=$('count'),num=$('num'),rdy=$('rdy');
-function show(t,go){num.className='';void num.offsetWidth;num.textContent=t;num.className='tick'+(go?' go':'')}
-const fmt=ms=>{const c=Math.floor(ms/10),s=Math.floor(c/100);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+'.'+String(c%100).padStart(2,'0')};
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function start(){
-  clearInterval(tick);clearInterval(cd);count.classList.remove('on');go.classList.remove('ready');rdy.hidden=true;go.style.visibility='';
-  open=[];moves=0;pairs=0;lock=true;phase='preview';
-  $('moves').textContent=0;$('pairs').textContent='0/4';$('time').textContent='0:00.00';
-  grid.classList.add('locked');grid.innerHTML='';
-  shuffle([...SET,...SET]).forEach(c=>{
-    const b=document.createElement('button');b.type='button';b.className='card up';b.dataset.k=c.k;b.setAttribute('aria-label',c.k);
-    const art=c.img?'<img src="'+c.img+'" alt="">':'<svg viewBox="0 0 24 24" aria-hidden="true">'+c.p+'</svg>';
-    b.innerHTML='<div class="face back"></div><div class="face front">'+art+'<span>'+c.k+'</span></div>';
-    b.onpointerdown=e=>{if(e.button===0)flip(b)};b.onclick=e=>{if(e.detail===0)flip(b)};grid.appendChild(b);
-  });
-  let n=PREVIEW;go.disabled=true;go.textContent='Memorize '+n;
-  cd=setInterval(()=>{
-    if(--n>0){go.textContent='Memorize '+n;return}
-    clearInterval(cd);
-    grid.querySelectorAll('.card').forEach(b=>{b.classList.remove('up');b.setAttribute('aria-label','Face down card')});
-    phase='ready';go.style.visibility='hidden';rdy.hidden=false;
-  },1000);
-}
-function ready(){
-  phase='count';rdy.hidden=true;
-  let n=3;count.classList.add('on');show(n);
-  cd=setInterval(()=>{
-    if(--n>0){show(n);return}
-    clearInterval(cd);show('Go',true);
-    setTimeout(()=>{count.classList.remove('on');setTimeout(()=>{if(phase==='count')begin()},300)},600);
-  },1000);
-}
-function begin(){
-  phase='play';lock=false;go.style.visibility='';go.disabled=false;grid.classList.remove('locked');go.textContent='New game';
-  t0=performance.now();tick=setInterval(()=>{$('time').textContent=fmt(performance.now()-t0)},31);
-}
-function flip(b){
-  if(lock||phase!=='play'||b.classList.contains('up'))return;
-  b.classList.add('up');b.setAttribute('aria-label',b.dataset.k);open.push(b);
-  if(open.length<2)return;
-  $('moves').textContent=++moves;
-  const [a,d]=open;open=[];
-  if(a.dataset.k===d.dataset.k){
-    a.classList.add('done');d.classList.add('done');$('pairs').textContent=(++pairs)+'/4';
-    if(pairs===4){clearInterval(tick);$('time').textContent=fmt(performance.now()-t0);phase='won';go.textContent='Play again'}
-  }else{
-    lock=true;setTimeout(()=>{[a,d].forEach(x=>{x.classList.remove('up');x.setAttribute('aria-label','Face down card')});lock=false},850);
-  }
-}
-rdy.onclick=ready;
-go.onclick=start;
-start();
-</script>
+
+</main>
+
+<footer>REBEL, PH HR Health and Wellbeing.</footer>
+
+<script src="js/content.js"></script>
+<script src="js/core.js"></script>
+<script src="js/memory.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/app.js"></script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');</script>
 </body>
 </html>
