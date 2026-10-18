@@ -298,7 +298,7 @@
         if (!right) miss++;
         c.node.disabled = true;
         c.node.classList.add(right ? "good" : "bad");
-        c.node.textContent = c.t + (c.real ? " — real sign" : " — not a sign");
+        c.node.textContent = c.t + (c.real ? " (real sign)" : " (not a sign)");
       });
       var ok = miss <= rd.maxMiss;
       state.extra.signsMiss = miss;
