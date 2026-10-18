@@ -300,3 +300,8 @@ input[type="text"]:focus, input[type="email"]:focus { border-color: var(--accent
 .mm-win .qr { width: clamp(150px, 24vh, 240px); }
 @media (prefers-reduced-transparency: reduce) { .mm-win { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--bg); } }
 @media (prefers-reduced-motion: reduce) { .qr { transition: none; } }
+.mm-double { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+a.mm-go { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.mm-go.alt { background: var(--green); color: var(--on-green); }
+.mm-go.ghost { background: var(--fill); color: var(--ink); }
+.mm-go.ghost:hover:not(:disabled) { filter: none; background: color-mix(in srgb, var(--accent) 14%, var(--fill)); }
