@@ -80,6 +80,7 @@ body[data-view="memory"] footer { display: none; }
 .hero { background: var(--sky); color: var(--on-sky); border-radius: var(--r-lg); overflow: hidden; display: grid; grid-template-columns: 1fr; }
 .hero .copy { padding: 32px 28px 8px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; justify-content: center; }
 .hero .when { font-size: 16px; font-weight: 600; opacity: .8; letter-spacing: 0; }
+.hero h1, .round-title, .tile h2, .h2 { text-transform: uppercase; }
 .hero h1 { font-size: clamp(56px, 11vw, 96px); line-height: .88; letter-spacing: -0.02em; }
 .hero .lede { max-width: 28ch; font-size: clamp(20px, 2.2vw, 24px); font-weight: 500; line-height: 1.3; margin-bottom: 8px; }
 .hero img.art { width: 100%; height: auto; display: block; margin-top: -4px; }

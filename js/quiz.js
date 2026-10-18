@@ -57,7 +57,7 @@
     var bMyth = btn("btn myth", "← Myth");
     var bFact = btn("btn", "Fact →");
     actions.append(bMyth, bFact);
-    var tip = el("p", "swipe-tip", "Swipe the card, tap a button, or press the left and right arrow keys.");
+    var tip = el("p", "swipe-tip", "Swipe the card or press the left and right arrow keys.");
     var fbBox = el("div");
     var nextCard = btn("btn ghost", "Next card");
     nextCard.hidden = true;
@@ -411,7 +411,7 @@
     if (state.r < topic.rounds.length - 1) { state.r++; startRound(); } else finish();
   });
   $("q-skip").addEventListener("click", function () {
-    thanks("Thanks for playing.", "Share it with a coworker. The more people who know the early signs, the better.", !RB.CONFIG.endpoint);
+    thanks("Thanks for playing.", "Share it with a coworker who might not know the early signs.", !RB.CONFIG.endpoint);
   });
   $("q-form").addEventListener("submit", function (ev) {
     ev.preventDefault();

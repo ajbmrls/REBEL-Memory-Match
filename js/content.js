@@ -6,7 +6,7 @@ window.REBEL_CONTENT = {
     id: "hypertension",
     title: "Know your hypertension",
     when: "",
-    lede: "Four quick games. About three minutes. Some answers will surprise you.",
+    lede: "Four quick games in about three minutes.",
     labels: [
       { max: 2, name: "Fresh Start", text: "Plenty here was new, and that's the point. Now you know what most people miss." },
       { max: 5, name: "Pressure Spotter", text: "You caught a lot of it. A few myths slipped through, and you now have the answers." },
@@ -15,7 +15,7 @@ window.REBEL_CONTENT = {
     raffleNote: "Winners are announced on the internal channel.",
     cta: {
       title: "Know your numbers early",
-      text: "High blood pressure often goes unnoticed until it causes a stroke or heart disease. A quick check is the fastest way to find out where you stand.",
+      text: "High blood pressure often goes unnoticed until it causes a stroke or heart disease. A quick check is the fastest way to know.",
       links: [
         { href: "https://rebel-eap.as.me/hp", title: "Book a REBEL hypertension consult", sub: "Talk it through with a health professional" }
       ],
@@ -61,7 +61,7 @@ window.REBEL_CONTENT = {
     id: "diabetes",
     title: "Know your diabetes",
     when: "World Diabetes Day, November 14",
-    lede: "Four quick games. About three minutes. Some answers will surprise you.",
+    lede: "Four quick games in about three minutes.",
     labels: [
       { max: 2, name: "Fresh Start", text: "Plenty here was new, and that's the point. Now you know what most people miss." },
       { max: 5, name: "Sugar Sleuth", text: "You spotted a lot of it. A few myths slipped through, and you now have the answers." },
@@ -70,7 +70,7 @@ window.REBEL_CONTENT = {
     raffleNote: "Winners are drawn within a week of November 14 and announced on the internal channel.",
     cta: {
       title: "Early action starts with a number",
-      text: "In the Philippines, 53.5 percent of adults with diabetes don't know they have it. A quick check is the fastest way to find out where you stand.",
+      text: "In the Philippines, 53.5 percent of adults with diabetes don't know they have it. A quick check is the fastest way to know.",
       links: [
         { href: "https://worlddiabetesday.org/", title: "Test your type 2 diabetes risk", sub: "World Diabetes Day, International Diabetes Federation" },
         { href: "https://rebel-eap.as.me/dp", title: "Book a REBEL diabetes consult", sub: "Talk it through with a health professional" }
