@@ -502,3 +502,16 @@ button, a, summary, [role="button"] { touch-action: manipulation; }
   footer { padding-bottom: 12px; }
 }
 .log-scores b { background: var(--accent); color: var(--accent-ink); }
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
+  /* The phone QR sits beside the hero, so it can be big without making the menu taller. */
+  #v-menu { display: grid; grid-template-columns: 1fr 260px; gap: 14px; align-items: stretch; }
+  #v-menu .hero { grid-column: 1; grid-row: 1; }
+  #v-menu .play-qr { grid-column: 2; grid-row: 1; flex-direction: column; justify-content: center; text-align: center; gap: 8px; padding: 12px 14px; }
+  #v-menu .tiles { grid-column: 1 / -1; grid-row: 2; }
+  #v-menu .meta { grid-column: 1 / -1; grid-row: 3; }
+  .play-qr img { width: 176px; height: 176px; padding: 8px; }
+  .play-qr h2 { font-size: 22px; margin: 0; }
+  .play-qr p { font-size: 13px; line-height: 1.3; max-width: none; }
+  .hero img.art { height: 100%; min-height: 170px; max-height: 240px; }
+  .tile { --art-h: clamp(96px, 12.5vh, 140px); }
+}
