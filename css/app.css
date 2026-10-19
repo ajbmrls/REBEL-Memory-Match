@@ -551,3 +551,6 @@ button, a, summary, [role="button"] { touch-action: manipulation; }
   .play-qr h2 { font-size: 21px; }
   .play-qr p { font-size: 14px; }
 }
+/* "Ready to Memorize?" must stand out from the blue card backs */
+.mm-memorize { background: #fff; color: #23609A; box-shadow: 0 0 0 5px var(--sky), 0 12px 36px rgba(0, 0, 0, .45); }
+.mm-memorize:hover:not(:disabled) { filter: none; background: #F2F7FC; }
