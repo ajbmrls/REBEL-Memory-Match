@@ -463,3 +463,42 @@ button, a, summary, [role="button"] { touch-action: manipulation; }
   .qr { -webkit-touch-callout: default; }   /* keep long-press on the QR links */
   img { -webkit-user-drag: none; }
 }
+
+/* Memory Match loader */
+.mm-loading { min-height: clamp(220px, 42vh, 420px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 24px; }
+.mm-loading[hidden] { display: none; }
+.mm-spinner { width: 56px; height: 56px; border-radius: 50%; border: 6px solid color-mix(in srgb, var(--accent) 25%, transparent); border-top-color: var(--accent); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.mm-loading-title { font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 4vw, 2.2rem); text-transform: uppercase; line-height: 1; color: var(--accent); max-width: 20ch; text-wrap: balance; }
+.mm-loading-bar { width: min(320px, 80%); height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--accent) 20%, transparent); overflow: hidden; }
+.mm-loading-bar span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform .25s ease-out; }
+.mm-loading-count { font-size: 15px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; min-height: 1.2em; }
+@media (prefers-reduced-motion: reduce) { .mm-spinner { animation-duration: 2.4s; } }
+
+/* Menu: QR to open the games on a phone (desktop and tablet only) */
+.play-qr { display: none; align-items: center; gap: 24px; background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow); padding: 20px 24px; }
+.play-qr img { width: 140px; height: 140px; flex: none; border-radius: 10px; background: #fff; padding: 6px; border: 3px solid #23609A; }
+.play-qr h2 { font-size: clamp(28px, 3vw, 36px); line-height: 1; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.play-qr p { color: var(--muted); font-size: 16px; max-width: 42ch; }
+/* Desktop only: a mouse-driven screen at least 1024px wide. Phones and tablets are already on a phone-sized device. */
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) { .play-qr { display: flex; } }
+
+/* Score rows: stronger contrast */
+.log-scores li { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); border: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); color: var(--ink); font-weight: 700; font-size: 1.05em; padding: 12px 16px; }
+.log-scores b { color: var(--ink); font-weight: 800; background: color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 8px; padding: 2px 10px; }
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
+  /* Keep the whole menu on one desktop screen with the QR card included. */
+  .play-qr { padding: 12px 20px; gap: 20px; }
+  .play-qr img { width: 104px; height: 104px; }
+  .play-qr h2 { font-size: 26px; margin-bottom: 2px; }
+  .play-qr p { font-size: 15px; }
+  .hero img.art { height: clamp(170px, 24vh, 250px); }
+  .hero .copy { padding-block: 28px; }
+  .tile { --art-h: clamp(100px, 14vh, 150px); }
+  #v-menu, #v-menu .tiles { gap: 14px; }
+}
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
+  .wrap { padding-block: 16px 4px; }
+  footer { padding-bottom: 12px; }
+}
+.log-scores b { background: var(--accent); color: var(--accent-ink); }

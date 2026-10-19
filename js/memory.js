@@ -9,7 +9,7 @@
   ];
   var PREVIEW = 7;
   var grid = $("mm-grid"), go = $("mm-go"), rdy = $("mm-ready"), win = $("mm-win"), count = $("mm-count"), num = $("mm-num");
-  var open = [], moves = 0, pairs = 0, lock = true, phase = "", t0 = 0, tick = 0, cd = 0, timers = [];
+  var startToken = 0, open = [], moves = 0, pairs = 0, lock = true, phase = "", t0 = 0, tick = 0, cd = 0, timers = [];
 
   function later(fn, ms) { var id = setTimeout(fn, ms); timers.push(id); return id; }
   function clearAll() { clearInterval(tick); clearInterval(cd); timers.forEach(clearTimeout); timers = []; }
@@ -20,12 +20,54 @@
     return s < 60 ? s + "." + h : Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0") + "." + h;
   }
 
+  /* Every picture is loaded and decoded before the cards are dealt, so a slow connection can never
+     cost anyone the preview. A loader shows while it waits. */
+  var ASSETS = SET.map(function (c) { return c.img; }).concat(["illustrations/rebel-wordmark-white.png"]);
+  var loaded = [], loadToken = 0, ready_ = false;
+  function loadAll(onProgress) {
+    var done = 0;
+    return Promise.all(ASSETS.map(function (src) {
+      return new Promise(function (resolve, reject) {
+        var im = new Image(), timer = setTimeout(function () { reject(new Error("timeout")); }, 25000);
+        im.onload = function () {
+          clearTimeout(timer);
+          (im.decode ? im.decode() : Promise.resolve()).catch(function () {}).then(function () { loaded.push(im); onProgress(++done); resolve(); });
+        };
+        im.onerror = function () { clearTimeout(timer); reject(new Error("failed " + src)); };
+        im.src = src;
+      });
+    }));
+  }
+  function whenLoaded() {
+    if (ready_) return Promise.resolve();
+    var token = ++loadToken, box = $("mm-loading");
+    var showTimer = setTimeout(function () { box.hidden = false; $("mm-loadingTitle").textContent = "Loading the cards..."; $("mm-retry").hidden = true; }, 200);
+    function progress(n) { $("mm-loadingBar").style.transform = "scaleX(" + (n / ASSETS.length) + ")"; $("mm-loadingCount").textContent = n + " of " + ASSETS.length; }
+    progress(0);
+    return loadAll(progress).then(function () {
+      clearTimeout(showTimer); box.hidden = true; ready_ = true;
+    }, function (err) {
+      clearTimeout(showTimer);
+      if (token === loadToken) {
+        box.hidden = false; $("mm-loadingTitle").textContent = "The cards did not load. Check your connection.";
+        $("mm-loadingCount").textContent = ""; $("mm-retry").hidden = false;
+      }
+      throw err;
+    });
+  }
+
   function start() {
     clearAll();
     count.classList.remove("on"); rdy.hidden = true; win.hidden = true; go.style.visibility = "";
     open = []; moves = 0; pairs = 0; lock = true; phase = "preview";
     $("mm-moves").textContent = 0; $("mm-pairs").textContent = "0/4"; $("mm-time").textContent = "0.00";
     grid.classList.add("locked"); grid.innerHTML = "";
+    go.disabled = true; go.textContent = "Loading";
+    var mine = ++startToken;
+    whenLoaded().then(function () { if (mine === startToken && phase === "preview") deal(); }, function () {});
+  }
+
+  function deal() {
     RB.shuffle(SET.concat(SET)).forEach(function (c) {
       var b = document.createElement("button");
       b.type = "button"; b.className = "mm-card up"; b.dataset.k = c.k; b.setAttribute("aria-label", c.k);
@@ -99,5 +141,6 @@
   rdy.onclick = ready;
   go.onclick = start;
   $("mm-again").onclick = start;
-  RB.memory = { start: start, stop: function () { clearAll(); phase = ""; } };
+  $("mm-retry").onclick = start;
+  RB.memory = { start: start, stop: function () { startToken++; $("mm-loading").hidden = true; clearAll(); phase = ""; } };
 })();

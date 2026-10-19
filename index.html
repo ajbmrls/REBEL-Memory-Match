@@ -59,6 +59,13 @@
         <span class="tile-meta">4 games, about 3 minutes <kbd>3</kbd></span>
       </a>
     </div>
+    <div class="play-qr">
+      <img src="assets/qr-play.svg" alt="QR code that opens REBEL Booth Games on your phone" width="160" height="160">
+      <div>
+        <h2>Play on your own phone</h2>
+        <p>Scan this code to open REBEL Booth Games on your phone, then play any game.</p>
+      </div>
+    </div>
     <p class="meta">Finish any game, then scan the code to enter the REBEL merch raffle.</p>
   </section>
 
@@ -71,6 +78,13 @@
         <button class="mm-go" id="mm-go" type="button" disabled>Memorize 7</button>
       </div>
       <div class="mm-stage">
+        <div class="mm-loading" id="mm-loading" hidden role="status" aria-live="polite">
+          <div class="mm-spinner" aria-hidden="true"></div>
+          <p class="mm-loading-title" id="mm-loadingTitle">Loading the cards...</p>
+          <div class="mm-loading-bar" aria-hidden="true"><span id="mm-loadingBar"></span></div>
+          <p class="mm-loading-count" id="mm-loadingCount"></p>
+          <button class="mm-go" id="mm-retry" type="button" hidden>Try again</button>
+        </div>
         <div class="mm-grid locked" id="mm-grid"></div>
         <div class="mm-count" id="mm-count" aria-live="assertive"><b id="mm-num"></b></div>
         <button class="mm-go mm-ready" id="mm-ready" type="button" hidden>Ready</button>
