@@ -364,9 +364,11 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
 }
 @media (max-width: 520px) {
   /* The win screen has more to say than the board is tall, so it takes the whole screen on a phone. */
-  .mm-win { position: fixed; inset: 0; border-radius: 0; z-index: 15; flex-direction: column-reverse; justify-content: center; padding: 96px 20px 24px; gap: 20px; }
+  .mm-win { position: fixed; inset: 0; border-radius: 0; z-index: 15; flex-direction: column; justify-content: flex-start; align-items: center; flex-wrap: nowrap; padding: 92px 20px 28px; gap: 18px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .mm-win .qr { order: -1; flex: none; margin-top: auto; }
+  .mm-win .mm-win-copy { margin-bottom: auto; }   /* centers when it fits, scrolls from the top when it does not */
   .mm-win-copy { max-width: none; width: 100%; }
-  .mm-win .qr { width: min(200px, 60vw); }
+  .mm-win .qr { width: min(190px, 52vw); }
   .mm-double .row { width: 100%; }
   .mm-double .mm-go { flex: 1; min-width: 0; padding-inline: 12px; }
 }
