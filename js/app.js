@@ -2,7 +2,6 @@
 (function () {
   var $ = RB.$;
   var VIEWS = { menu: $("v-menu"), memory: $("v-memory"), quiz: $("v-quiz") };
-  var TITLES = { memory: "Memory Match", hypertension: "Know Your Hypertension", diabetes: "Know Your Diabetes" };
   var current = "";
 
   function route() {
@@ -13,7 +12,7 @@
     if (current === "quiz" && view !== "quiz") RB.quiz.stop();
     Object.keys(VIEWS).forEach(function (k) { VIEWS[k].hidden = k !== view; });
     $("backBtn").hidden = view === "menu";
-    document.title = (TITLES[h] ? TITLES[h] + " | " : "") + "REBEL Games";
+    document.title = "REBEL Booth Games";
     document.body.dataset.view = view;
     var v = VIEWS[view];
     v.classList.remove("enter"); void v.offsetWidth; v.classList.add("enter");
