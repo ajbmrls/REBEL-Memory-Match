@@ -38,6 +38,8 @@
     var m = /^(\d+):(\d{2})\.(\d{2})$/.exec(t);
     return m ? (parseInt(m[1], 10) * 60 + parseInt(m[2], 10)) + "." + m[3] : String(t);
   };
+  // The time as it is copied for the score form: "3.45 secs", "65.30 secs".
+  RB.scoreTime = function (t) { return RB.timeToSeconds(t) + " secs"; };
   // Adds the unit when the time is plain seconds: "3.45" -> "3.45s", "1:05.30" stays as is.
   RB.timeLabel = function (t) { return /:/.test(t) ? t : t + "s"; };
 

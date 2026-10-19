@@ -174,7 +174,7 @@
   var qrLink = $("mm-qrLink");
   qrLink.addEventListener("click", function (e) {
     e.preventDefault();
-    RB.copyAndGo(qrLink.href, RB.timeToSeconds($("mm-time").textContent));
+    RB.copyAndGo(qrLink.href, RB.scoreTime($("mm-time").textContent));
   });
   rdy.onclick = ready;
   memo.onclick = memorize;

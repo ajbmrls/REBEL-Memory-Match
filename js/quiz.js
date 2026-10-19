@@ -479,7 +479,7 @@
   // The text copied for the score form, e.g. "12.5 + 2/7 + applied to HP".
   function scoreString() {
     var parts = [];
-    if (carried && carried.memory) parts.push(RB.timeToSeconds(carried.memory.time));
+    if (carried && carried.memory) parts.push(RB.scoreTime(carried.memory.time));
     parts.push(lastScore + "/7");
     if (doubled) parts.push("applied to " + topic.program.abbr);
     return parts.join(" + ");
