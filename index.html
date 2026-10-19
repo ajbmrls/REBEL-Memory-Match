@@ -63,7 +63,7 @@
       <img src="assets/qr-play.svg" alt="QR code that opens REBEL Booth Games on your phone" width="160" height="160">
       <div>
         <h2>Play on your own phone</h2>
-        <p>Scan this code to open REBEL Booth Games on your phone, then play any game.</p>
+        <p>Scan to open these games on your phone.</p>
       </div>
     </div>
     <p class="meta">Finish any game, then scan the code to enter the REBEL merch raffle.</p>
@@ -88,6 +88,7 @@
         <div class="mm-grid locked" id="mm-grid"></div>
         <div class="mm-count" id="mm-count" aria-live="assertive"><b id="mm-num"></b></div>
         <button class="mm-go mm-ready" id="mm-ready" type="button" hidden>Ready</button>
+        <button class="mm-go mm-ready mm-memorize" id="mm-memorize" type="button" hidden>Ready to Memorize?</button>
         <div class="mm-win" id="mm-win" hidden>
           <div class="mm-win-copy">
             <h2>All pairs found</h2>
@@ -183,6 +184,24 @@
   </div>
 
 </main>
+
+<div class="tutorial" id="mm-tutorial" hidden role="dialog" aria-modal="true" aria-labelledby="tutTitle">
+  <div class="tutorial-card">
+    <h2 id="tutTitle">How to play</h2>
+    <div class="tut-stage" aria-hidden="true">
+      <div class="tut-grid">
+        <div class="tut-card"><div class="tut-face tut-back"></div><div class="tut-face tut-front"><img src="illustrations/runner.png" alt=""></div></div>
+        <div class="tut-card"><div class="tut-face tut-back"></div><div class="tut-face tut-front"><img src="illustrations/strong-mind.png" alt=""></div></div>
+        <div class="tut-card"><div class="tut-face tut-back"></div><div class="tut-face tut-front"><img src="illustrations/strong-mind.png" alt=""></div></div>
+        <div class="tut-card"><div class="tut-face tut-back"></div><div class="tut-face tut-front"><img src="illustrations/runner.png" alt=""></div></div>
+      </div>
+      <div class="tut-badge" id="tutBadge"></div>
+    </div>
+    <p class="tut-caption" id="tutCaption" aria-live="polite"></p>
+    <p class="tut-note">First you get 7 seconds to memorize all eight cards. Then they flip face down and the clock starts. Find all four pairs as fast as you can.</p>
+    <button class="btn" id="tutGo" type="button">Got it, let's play</button>
+  </div>
+</div>
 
 <div class="copied" id="copied" hidden role="alertdialog" aria-modal="true" aria-labelledby="copiedTitle" aria-live="assertive">
   <div class="copied-card">

@@ -515,3 +515,39 @@ button, a, summary, [role="button"] { touch-action: manipulation; }
   .hero img.art { height: 100%; min-height: 170px; max-height: 240px; }
   .tile { --art-h: clamp(96px, 12.5vh, 140px); }
 }
+
+/* Memory Match: "Ready to Memorize?" and the how-to-play tutorial */
+.mm-memorize { background: var(--blue); color: #fff; font-size: clamp(1.3rem, 3.4vw, 2.4rem); box-shadow: 0 8px 30px rgba(13, 23, 38, .35); white-space: nowrap; }
+.tutorial { position: fixed; inset: 0; z-index: 150; display: grid; place-items: center; padding: 16px; overflow-y: auto; background: rgba(8, 16, 28, .72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.tutorial[hidden] { display: none; }
+.tutorial-card { width: min(560px, 100%); background: var(--surface); color: var(--ink); border-radius: 28px; padding: clamp(20px, 4vw, 36px); display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; box-shadow: var(--shadow-lift); }
+.tutorial-card h2 { font-size: clamp(40px, 8vw, 64px); line-height: .9; text-transform: uppercase; color: var(--accent); }
+.tut-stage { position: relative; width: 100%; padding: 18px 12px 12px; background: var(--fill); border-radius: var(--r-lg); display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.tut-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: min(380px, 100%); perspective: 800px; }
+.tut-card { aspect-ratio: 3 / 4; position: relative; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.3, .9, .3, 1); border-radius: 10px; }
+.tut-card.up { transform: rotateY(180deg); }
+.tut-face { position: absolute; inset: 0; border-radius: inherit; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; place-items: center; overflow: hidden; }
+.tut-back { background: #23609A url(../illustrations/rebel-wordmark-white.png) center / 70% auto no-repeat; }
+.tut-front { background: #fff; border: 2px solid #B9D0E0; transform: rotateY(180deg); }
+.tut-front img { width: 82%; height: auto; max-height: 82%; object-fit: contain; }
+.tut-card.ok .tut-front { background: var(--green); border-color: var(--green); }
+.tut-badge { min-height: 40px; font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1; letter-spacing: .02em; text-transform: uppercase; padding: 8px 16px 9px; border-radius: 999px; opacity: 0; transform: scale(.8); transition: opacity .2s, transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.tut-badge.bad { opacity: 1; transform: none; background: var(--bad-bg); color: var(--bad); }
+.tut-badge.good { opacity: 1; transform: none; background: var(--good-bg); color: var(--good); }
+.tut-caption { font-size: clamp(20px, 3vw, 24px); font-weight: 700; line-height: 1.25; min-height: 2.5em; display: flex; align-items: center; text-wrap: balance; }
+.tut-note { font-size: 15px; color: var(--muted); max-width: 44ch; }
+.tutorial .btn { width: 100%; font-size: 19px; }
+@media (prefers-reduced-motion: no-preference) {
+  .tut-card.shake { animation: tutshake .45s ease-in-out 2; }
+  @keyframes tutshake { 0%, 100% { translate: 0; } 25% { translate: -5px; } 75% { translate: 5px; } }
+}
+@media (prefers-reduced-motion: reduce) { .tut-card, .tut-badge { transition: none; } }
+@media (prefers-reduced-transparency: reduce) { .tutorial { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(8, 16, 28, .94); } }
+@media (max-width: 520px) { .tut-badge { font-size: 22px; } .mm-memorize { font-size: 1.35rem; padding-inline: 1.1em; } }
+@media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
+  /* The code has almost no built-in margin, so the picture can be bigger inside the same card. */
+  #v-menu .play-qr { padding: 12px; gap: 6px; }
+  .play-qr img { width: 208px; height: 208px; padding: 7px; border-width: 3px; }
+  .play-qr h2 { font-size: 21px; }
+  .play-qr p { font-size: 14px; }
+}
