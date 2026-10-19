@@ -343,7 +343,6 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
   .qr-row { flex-wrap: wrap; }
   .qr-row .qr { width: min(240px, 100%); }
   .double-box { flex: 1 1 100%; max-width: none; }
-  .panel.two .qr-col { order: -1; }   /* the QR is the point of the screen, so it comes first */
   .panel { padding: 24px 18px; }
 }
 @media (max-width: 520px) {
@@ -446,3 +445,11 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
 .qe { font-size: 13px; letter-spacing: .07em; }
 .qe.t, .qe.b { left: 30px; right: 30px; }
 .qe.l, .qe.r { top: 30px; bottom: 30px; }
+
+@media (max-width: 640px) {
+  /* Result screen on a phone: score and its QR first, then the result and next steps, and the double offer at the very bottom. */
+  .panel.two .qr-col, .panel.two .qr-row { display: contents; }
+  .panel.two .col:not(.qr-col) { order: 10; }
+  .panel.two .double-box { order: 20; background: var(--fill); border-radius: var(--r-md); padding: 16px; max-width: none; gap: 12px; margin-top: 6px; }
+  .panel.two .qr-col > .row { order: 30; }
+}
