@@ -380,3 +380,4 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
   .sign { min-height: 76px; font-size: 16px; }
 }
 @media (max-width: 760px) { .tile { --art-h: 170px; } }
+.free { color: var(--on-purple); background: var(--purple); border-radius: 6px; padding: 1px 7px 2px; text-transform: uppercase; letter-spacing: .04em; font-weight: 800; font-size: .92em; white-space: nowrap; }

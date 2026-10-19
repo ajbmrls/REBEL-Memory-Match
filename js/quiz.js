@@ -382,18 +382,23 @@
     RB.send(row);
   }
 
+  function free(t) { return el("strong", "free", t); }   // highlights the free part of the offer
+
   function renderDouble() {
     var b = $("q-double");
     b.disabled = doubled; b.classList.toggle("doubled", doubled);
     b.textContent = doubled ? "\u2713 Entries doubled" : "Double your entries";
-    $("q-doubleNote").textContent = doubled ? "Your entries are doubled. Scan the code to log your score." : "Sign up for a free REBEL program to double your chances.";
+    var dn = $("q-doubleNote"); dn.textContent = "";
+    if (doubled) dn.append("Your entries are doubled. Scan the code to log your score.");
+    else dn.append("Sign up for the ", free("free"), " " + topic.program.label + " to double your chances.");
   }
   var sheet = $("q-sheet");
   function openSheet() {
     var p = topic.program;
-    $("q-sheetText").textContent = "Scan the code to sign up for the REBEL " + p.name + " program. Then come back and tap done.";
+    var st = $("q-sheetText"); st.textContent = "";
+    st.append("Scan the code to sign up for the ", free("free"), " " + p.label + ". Then come back and tap done.");
     var l = $("q-progLink"); l.href = p.url; l.innerHTML = "";
-    var im = el("img"); im.src = p.qr; im.alt = "QR code to sign up for the REBEL " + p.name + " program"; im.width = 260; im.height = 260; l.appendChild(im);
+    var im = el("img"); im.src = p.qr; im.alt = "QR code to sign up for the free " + p.label; im.width = 260; im.height = 260; l.appendChild(im);
     sheet.showModal();
     // The sheet grows out of the button that opened it.
     var r = $("q-double").getBoundingClientRect(), s = sheet.getBoundingClientRect();

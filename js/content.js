@@ -12,7 +12,7 @@ window.REBEL_CONTENT = {
       { max: 5, name: "Pressure Spotter", text: "You caught a lot of it. A few myths slipped through, and you now have the answers." },
       { max: 7, name: "Numbers Master", text: "You know your numbers. Pass it on to someone who doesn't." }
     ],
-    program: { qr: "assets/qr-hypertension.svg", url: "https://rebel.typeform.com/Accenture?utm_source=OCT19BOOTH", name: "hypertension" },
+    program: { qr: "assets/qr-hypertension.svg", url: "https://rebel.typeform.com/Accenture?utm_source=OCT19BOOTH", name: "hypertension", label: "REBEL Hypertension Prevention Program" },
     qr: "assets/qr-score.svg",
     qrUrl: "https://rebel.typeform.com/to/MnuskhU7?typeform-source=qrcode-button",
     cta: {
@@ -68,7 +68,7 @@ window.REBEL_CONTENT = {
       { max: 5, name: "Sugar Sleuth", text: "You spotted a lot of it. A few myths slipped through, and you now have the answers." },
       { max: 7, name: "Glucose Genius", text: "You know your stuff. Pass it on to someone who doesn't." }
     ],
-    program: { qr: "assets/qr-diabetes.svg", url: "https://rebel.typeform.com/acndiabetes?utm_source=OCT19BOOTH", name: "diabetes" },
+    program: { qr: "assets/qr-diabetes.svg", url: "https://rebel.typeform.com/acndiabetes?utm_source=OCT19BOOTH", name: "diabetes", label: "REBEL Diabetes Prevention Program" },
     qr: "assets/qr-score.svg",
     qrUrl: "https://rebel.typeform.com/to/MnuskhU7?typeform-source=qrcode-button",
     cta: {
