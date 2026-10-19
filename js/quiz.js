@@ -437,8 +437,10 @@
     item(topic.title, score + " out of 7");
     renderDouble();
     var link = $("q-qrLink"); link.href = topic.qrUrl; link.innerHTML = "";
+    var scoreText = (carried && carried.memory ? RB.timeToSeconds(carried.memory.time) + " + " : "") + score + "/7";
+    link.onclick = function (e) { e.preventDefault(); RB.copyAndGo(topic.qrUrl, scoreText); };
     link.appendChild(images.score || makeQr(topic.qr, "QR code to log your score and enter the raffle"));
-    link.appendChild(el("span", "qr-cap", SCORE_CAP));
+    link.appendChild(el("span", "qr-cap", SCORE_CAP)); edges(link);
     var steps = $("q-steps"); steps.innerHTML = "";
     cta.links.forEach(function (l) {
       var a = el("a"); a.href = l.href; a.target = "_blank"; a.rel = "noopener";
@@ -460,6 +462,10 @@
     images.score = makeQr(topic.qr, "QR code to log your score and enter the raffle");
   }
 
+  // A bold frame around each QR that says it can be clicked, on all four sides.
+  function edges(link) {
+    ["t", "b", "l", "r"].forEach(function (s) { var i = el("i", "qe " + s, "You can click the QR code"); i.setAttribute("aria-hidden", "true"); link.appendChild(i); });
+  }
   var SCORE_CAP = "On a phone? Tap the code to open the score and raffle form.";
   var PROGRAM_CAP = "On a phone? Tap the code to open the sign-up form.";
 
@@ -480,7 +486,7 @@
     st.append("Scan the code to sign up for the ", free("free"), " " + p.label + ". Then come back and tap done.");
     var l = $("q-progLink"); l.href = p.url; l.innerHTML = "";
     l.appendChild(images.program || makeQr(p.qr, "QR code to sign up for the free " + p.label));   // already loaded by open()
-    l.appendChild(el("span", "qr-cap", PROGRAM_CAP));
+    l.appendChild(el("span", "qr-cap", PROGRAM_CAP)); edges(l);
     sheet.showModal();
     // The sheet grows out of the button that opened it.
     var r = $("q-double").getBoundingClientRect(), s = sheet.getBoundingClientRect();

@@ -27,7 +27,7 @@
   function typing(e) { var t = e.target && e.target.tagName; return t === "INPUT" || t === "TEXTAREA" || t === "SELECT"; }
 
   document.addEventListener("keydown", function (e) {
-    if (e.metaKey || e.ctrlKey || e.altKey || typing(e) || document.querySelector("dialog[open]")) return;
+    if (e.metaKey || e.ctrlKey || e.altKey || typing(e) || RB.floaterOpen || document.querySelector("dialog[open]")) return;
     if (current === "menu") {
       if (e.key === "1") location.hash = "memory";
       else if (e.key === "2") location.hash = "hypertension";

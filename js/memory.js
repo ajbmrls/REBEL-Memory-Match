@@ -90,6 +90,11 @@
     }
   }
 
+  var qrLink = $("mm-qrLink");
+  qrLink.addEventListener("click", function (e) {
+    e.preventDefault();
+    RB.copyAndGo(qrLink.href, RB.timeToSeconds($("mm-time").textContent));
+  });
   rdy.onclick = ready;
   go.onclick = start;
   $("mm-again").onclick = start;

@@ -86,7 +86,7 @@
             </div>
             <button class="mm-go ghost" id="mm-again" type="button">Play again</button>
           </div>
-          <a class="qr" href="https://rebel.typeform.com/to/MnuskhU7?typeform-source=qrcode-button" target="_blank" rel="noopener"><img src="assets/qr-score.svg" alt="QR code to log your score and enter the raffle" width="260" height="260"><span class="qr-cap">On a phone? Tap the code to open the score and raffle form.</span></a>
+          <a class="qr" id="mm-qrLink" href="https://rebel.typeform.com/to/MnuskhU7?typeform-source=qrcode-button" target="_blank" rel="noopener"><img src="assets/qr-score.svg" alt="QR code to log your score and enter the raffle" width="260" height="260"><i class="qe t" aria-hidden="true">You can click the QR code</i><i class="qe b" aria-hidden="true">You can click the QR code</i><i class="qe l" aria-hidden="true">You can click the QR code</i><i class="qe r" aria-hidden="true">You can click the QR code</i><span class="qr-cap">On a phone? Tap the code to open the score and raffle form.</span></a>
         </div>
       </div>
     </div>
@@ -167,6 +167,21 @@
   </div>
 
 </main>
+
+<div class="copied" id="copied" hidden role="alertdialog" aria-modal="true" aria-labelledby="copiedTitle" aria-live="assertive">
+  <div class="copied-card">
+    <svg class="copied-check" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg>
+    <h2 id="copiedTitle">Score copied!</h2>
+    <p class="copied-msg" id="copiedMsg"></p>
+    <div class="copied-score" id="copiedScore"></div>
+    <div class="copied-bar" aria-hidden="true"><span id="copiedBar"></span></div>
+    <p class="copied-count" id="copiedCount"></p>
+    <div class="row">
+      <button class="btn" id="copiedGo" type="button">Open the form now</button>
+      <button class="btn ghost" id="copiedCancel" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <footer>REBEL, PH HR Health and Wellbeing.</footer>
 
