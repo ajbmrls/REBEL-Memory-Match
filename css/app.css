@@ -381,3 +381,11 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
 }
 @media (max-width: 760px) { .tile { --art-h: 170px; } }
 .free { color: var(--on-purple); background: var(--purple); border-radius: 6px; padding: 1px 7px 2px; text-transform: uppercase; letter-spacing: .04em; font-weight: 800; font-size: .92em; white-space: nowrap; }
+
+/* Dragging readings */
+.reading { touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; position: relative; }
+.reading:disabled { cursor: default; }
+.reading.dragging { cursor: grabbing; transition: none; box-shadow: var(--shadow-lift); border-color: var(--accent); background: var(--surface); }
+.bucket { transition: background-color .15s, box-shadow .15s; }
+.bucket.hot { background: color-mix(in srgb, var(--accent) 18%, var(--fill)); box-shadow: inset 0 0 0 2px var(--accent); }
+@media (prefers-reduced-motion: no-preference) { .reading.landed { animation: land .26s var(--ease); } @keyframes land { from { transform: scale(.88); } to { transform: none; } } }

@@ -206,7 +206,7 @@
 
   /* ---------- Game: Sort the reading ---------- */
   function runSort(stage, done, rd) {
-    var names = Object.keys(rd.pool), cards = [], sel = null, checked = false, buckets = {};
+    var names = Object.keys(rd.pool), cards = [], sel = null, checked = false, buckets = {}, boxes = {}, suppress = false;
     names.forEach(function (n) { RB.sample(rd.pool[n], 2).forEach(function (v) { cards.push({ v: v, ans: n, put: null, node: null }); }); });
     cards = RB.shuffle(cards);
     stage.appendChild(el("p", "clue", "Where does each blood pressure reading belong?"));
@@ -221,20 +221,89 @@
       var b = el("div", "bucket"), h = btn("bucket-btn", n), list = el("div", "bucket-list");
       b.append(h, list);
       h.addEventListener("click", function () { place(n); });
-      buckets[n] = list; wrap.appendChild(b);
+      buckets[n] = list; boxes[n] = b; wrap.appendChild(b);
     });
     cards.forEach(function (c) {
       var b = btn("reading", c.v);
       b.setAttribute("aria-pressed", "false");
       c.node = b;
       b.addEventListener("click", function () {
-        if (checked) return;
+        if (checked || suppress) { suppress = false; return; }
         if (c.put) { c.put = null; tray.appendChild(b); }
         select(c); refresh();
       });
+      attachDrag(c);
       tray.appendChild(b);
     });
     stage.append(status, tray, wrap, check, out);
+
+    /* Drag a reading into a bucket. Tracks the pointer 1:1 from where it was grabbed, picks the bucket under the
+       pointer on release, and springs home (carrying the release velocity) if it was dropped nowhere useful. */
+    function dragTransform(node) { node.style.transform = "translate3d(" + node._dx + "px," + node._dy + "px,0) scale(1.06)"; }
+    function clearDrag(node) { node.style.transform = ""; node.style.zIndex = ""; node.classList.remove("dragging"); node._dx = node._dy = 0; }
+    function springHome(node, vx, vy) {
+      var x = node._dx || 0, y = node._dy || 0;
+      if (RB.reduceMotion()) { clearDrag(node); return; }
+      var w = 2 * Math.PI / 0.38, k = w * w, cc = 2 * w, last = performance.now();
+      function step(t) {
+        var dt = Math.min((t - last) / 1000, 0.032); last = t;
+        vx += (-k * x - cc * vx) * dt; vy += (-k * y - cc * vy) * dt;
+        x += vx * dt; y += vy * dt;
+        node._dx = x; node._dy = y;
+        if (Math.abs(x) < 0.5 && Math.abs(y) < 0.5 && Math.abs(vx) < 8 && Math.abs(vy) < 8) { node._raf = 0; clearDrag(node); return; }
+        dragTransform(node);
+        node._raf = requestAnimationFrame(step);
+      }
+      node._raf = requestAnimationFrame(step);
+    }
+    function zoneAt(node, x, y) {
+      var els = document.elementsFromPoint(x, y);
+      for (var i = 0; i < els.length; i++) {
+        if (node.contains(els[i])) continue;
+        for (var n in boxes) if (boxes[n] === els[i] || boxes[n].contains(els[i])) return n;
+        if (els[i] === tray) return "";
+      }
+      return null;
+    }
+    function hot(n) { names.forEach(function (k) { boxes[k].classList.toggle("hot", k === n); }); }
+    function attachDrag(c) {
+      var node = c.node, sx = 0, sy = 0, ox = 0, oy = 0, active = false, moved = false, hist = [];
+      node._dx = node._dy = 0;
+      node.addEventListener("pointerdown", function (e) {
+        if (checked || e.button !== 0) return;
+        if (node._raf) { cancelAnimationFrame(node._raf); node._raf = 0; }   // grab it mid-flight
+        active = true; moved = !!(node._dx || node._dy); hist = [];
+        sx = e.clientX; sy = e.clientY; ox = node._dx || 0; oy = node._dy || 0;
+        try { node.setPointerCapture(e.pointerId); } catch (x) {}
+      });
+      node.addEventListener("pointermove", function (e) {
+        if (!active) return;
+        var dx = e.clientX - sx, dy = e.clientY - sy;
+        if (!moved && Math.hypot(dx, dy) < 8) return;   // a small wobble is still a tap
+        if (!moved) { moved = true; select(c); refresh(); node.classList.add("dragging"); node.style.zIndex = "30"; }
+        node._dx = ox + dx; node._dy = oy + dy;
+        dragTransform(node);
+        hist.push({ t: e.timeStamp, x: e.clientX, y: e.clientY }); if (hist.length > 6) hist.shift();
+        var z = zoneAt(node, e.clientX, e.clientY); hot(z && boxes[z] ? z : null);
+      });
+      function end(e) {
+        if (!active) return;
+        active = false; hot(null);
+        if (!moved) return;                 // plain tap: the click handler takes over
+        suppress = true; setTimeout(function () { suppress = false; }, 0);
+        var vx = 0, vy = 0;
+        if (hist.length > 1) { var a = hist[0], b = hist[hist.length - 1]; if (b.t > a.t) { vx = (b.x - a.x) / (b.t - a.t) * 1000; vy = (b.y - a.y) / (b.t - a.t) * 1000; } }
+        var z = e.type === "pointercancel" ? null : zoneAt(node, e.clientX, e.clientY);
+        if (z && boxes[z]) {
+          clearDrag(node); select(c); place(z);
+          node.classList.add("landed"); setTimeout(function () { node.classList.remove("landed"); }, 260);
+        } else if (z === "" && c.put) {
+          clearDrag(node); c.put = null; tray.appendChild(node); select(c); refresh();
+        } else springHome(node, vx, vy);
+      }
+      node.addEventListener("pointerup", end);
+      node.addEventListener("pointercancel", end);
+    }
 
     function select(c) {
       sel = c;

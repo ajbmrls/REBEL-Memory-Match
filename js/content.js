@@ -43,7 +43,7 @@ window.REBEL_CONTENT = {
       { type: "crowd", name: "Crowd check", hint: "Tap how many of the 10 you think have high blood pressure.",
         cfg: { key: "crowd", prompt: "10 Filipino adults. How many have high blood pressure?", full: 3, part: 1, accept: [3, 4],
                explain: "About 1 in 3 Filipino adults has high blood pressure.", fun: "3 or 4 counts as spot on." } },
-      { type: "sort", name: "Sort the reading", hint: "Tap a reading, then tap where it belongs.", need: 5,
+      { type: "sort", name: "Sort the reading", hint: "Drag each reading into a bucket, or tap one and then tap a bucket.", need: 5,
         pool: {
           Normal: ["108/68", "112/70", "116/74", "118/76"],
           Borderline: ["122/80", "124/82", "130/84", "136/86", "138/88"],
