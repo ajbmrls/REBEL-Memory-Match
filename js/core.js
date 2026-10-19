@@ -5,6 +5,12 @@
   // Set this to your Google Apps Script web app URL once the sheet is ready.
   RB.CONFIG = { endpoint: "" };
 
+  // iOS Safari ignores user-scalable=no, so block pinch gestures directly.
+  ["gesturestart", "gesturechange", "gestureend"].forEach(function (t) {
+    document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false });
+  });
+  document.addEventListener("touchmove", function (e) { if (e.touches && e.touches.length > 1) e.preventDefault(); }, { passive: false });
+
   RB.$ = function (id) { return document.getElementById(id); };
   RB.el = function (tag, cls, text) {
     var n = document.createElement(tag);

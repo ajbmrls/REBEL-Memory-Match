@@ -453,3 +453,13 @@ a.mm-go { display: inline-flex; align-items: center; justify-content: center; te
   .panel.two .double-box { order: 20; background: var(--fill); border-radius: var(--r-md); padding: 16px; max-width: none; gap: 12px; margin-top: 6px; }
   .panel.two .qr-col > .row { order: 30; }
 }
+
+/* Native feel on touch screens: no pinch or double-tap zoom, no sideways scrolling, no rubber-band or text selection */
+html { overflow-x: hidden; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: clip; max-width: 100vw; touch-action: pan-y; }
+button, a, summary, [role="button"] { touch-action: manipulation; }
+@media (hover: none) {
+  body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  .qr { -webkit-touch-callout: default; }   /* keep long-press on the QR links */
+  img { -webkit-user-drag: none; }
+}
