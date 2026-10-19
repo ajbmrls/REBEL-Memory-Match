@@ -249,7 +249,7 @@ input[type="text"]:focus, input[type="email"]:focus { border-color: var(--accent
 .mm-head h1 { font-size: clamp(2rem, 4.4vw, 3rem); line-height: 1; letter-spacing: .01em; color: var(--accent); flex: 1; min-width: 0; text-transform: uppercase; font-weight: 700; }
 .mm-stats { display: flex; gap: clamp(14px, 3vw, 28px); font-size: clamp(.85rem, 1.5vw, 1.05rem); text-transform: uppercase; letter-spacing: .2em; color: var(--muted); font-weight: 600; font-family: var(--display); }
 .mm-stats span { display: flex; flex-direction: column; gap: 2px; }
-.mm-stats span:first-child { min-width: 4ch; }
+.mm-stats span:first-child { min-width: 5ch; }
 .mm-stats b { color: var(--ink); font-size: clamp(1.6rem, 3.2vw, 2.4rem); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: 0; line-height: 1; }
 .mm-go { font: inherit; font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: clamp(1rem, 2vw, 1.3rem); background: var(--blue); color: #fff; border: 0; border-radius: 999px; padding: 12px 26px; min-height: 48px; min-width: 150px; cursor: pointer; touch-action: manipulation; font-variant-numeric: tabular-nums; transition: transform .1s ease-out, background-color .2s ease, filter .15s; }
 .mm-go:hover:not(:disabled) { filter: brightness(1.1); }

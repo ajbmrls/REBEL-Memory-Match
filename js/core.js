@@ -33,12 +33,13 @@
     return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   };
 
-  // "12s" -> "12", "1:05" -> "65": the memory time as plain seconds for the score form.
+  // "1:05.30" -> "65.30"; "3.45" stays "3.45". Used for the score form.
   RB.timeToSeconds = function (t) {
-    var m = /^(\d+):(\d{2})$/.exec(t);
-    if (m) return String(parseInt(m[1], 10) * 60 + parseInt(m[2], 10));
-    return String(t).replace(/s$/, "");
+    var m = /^(\d+):(\d{2})\.(\d{2})$/.exec(t);
+    return m ? (parseInt(m[1], 10) * 60 + parseInt(m[2], 10)) + "." + m[3] : String(t);
   };
+  // Adds the unit when the time is plain seconds: "3.45" -> "3.45s", "1:05.30" stays as is.
+  RB.timeLabel = function (t) { return /:/.test(t) ? t : t + "s"; };
 
   function legacyCopy(text) {
     var ta = document.createElement("textarea");

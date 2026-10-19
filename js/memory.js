@@ -14,17 +14,17 @@
   function later(fn, ms) { var id = setTimeout(fn, ms); timers.push(id); return id; }
   function clearAll() { clearInterval(tick); clearInterval(cd); timers.forEach(clearTimeout); timers = []; }
   function show(t, isGo) { num.className = ""; void num.offsetWidth; num.textContent = t; num.className = "tick" + (isGo ? " go" : ""); }
-  // Whole seconds only, no leading zeros: "7s", "42s", then "1:05" once a minute has passed.
+  // No leading zeros: "3.45", "42.07", then "1:05.30" once a minute has passed.
   function fmt(ms) {
-    var s = Math.floor(ms / 1000);
-    return s < 60 ? s + "s" : Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+    var c = Math.floor(ms / 10), s = Math.floor(c / 100), h = String(c % 100).padStart(2, "0");
+    return s < 60 ? s + "." + h : Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0") + "." + h;
   }
 
   function start() {
     clearAll();
     count.classList.remove("on"); rdy.hidden = true; win.hidden = true; go.style.visibility = "";
     open = []; moves = 0; pairs = 0; lock = true; phase = "preview";
-    $("mm-moves").textContent = 0; $("mm-pairs").textContent = "0/4"; $("mm-time").textContent = "0s";
+    $("mm-moves").textContent = 0; $("mm-pairs").textContent = "0/4"; $("mm-time").textContent = "0.00";
     grid.classList.add("locked"); grid.innerHTML = "";
     RB.shuffle(SET.concat(SET)).forEach(function (c) {
       var b = document.createElement("button");
@@ -61,7 +61,7 @@
     phase = "play"; lock = false; go.style.visibility = ""; go.disabled = false;
     grid.classList.remove("locked"); go.textContent = "New game";
     t0 = performance.now();
-    tick = setInterval(function () { $("mm-time").textContent = fmt(performance.now() - t0); }, 100);
+    tick = setInterval(function () { $("mm-time").textContent = fmt(performance.now() - t0); }, 31);
   }
 
   function flip(b) {
@@ -77,7 +77,7 @@
         phase = "won"; go.textContent = "Play again";
         RB.lastMemory = { time: $("mm-time").textContent, moves: moves };
         later(function () {
-          $("mm-winScore").textContent = $("mm-time").textContent + " in " + moves + (moves === 1 ? " move" : " moves");
+          $("mm-winScore").textContent = RB.timeLabel($("mm-time").textContent) + " in " + moves + (moves === 1 ? " move" : " moves");
           win.hidden = false;
           try { $("mm-again").focus({ preventScroll: true }); } catch (e) {}
         }, 700);

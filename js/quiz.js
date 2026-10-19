@@ -472,7 +472,7 @@
   function renderScores() {
     var list = $("q-logScores"); list.innerHTML = "";
     function item(name, val) { var li = el("li"); li.appendChild(el("span", null, name)); li.appendChild(el("b", null, val)); list.appendChild(li); }
-    if (carried && carried.memory) item("Memory Match", carried.memory.time + " in " + carried.memory.moves + (carried.memory.moves === 1 ? " move" : " moves"));
+    if (carried && carried.memory) item("Memory Match", RB.timeLabel(carried.memory.time) + " in " + carried.memory.moves + (carried.memory.moves === 1 ? " move" : " moves"));
     item(topic.title, lastScore + " out of 7");
     if (doubled) item("Prevention program", "Applied to " + topic.program.abbr);
   }
