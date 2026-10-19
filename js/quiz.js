@@ -437,7 +437,7 @@
     item(topic.title, score + " out of 7");
     renderDouble();
     var link = $("q-qrLink"); link.href = topic.qrUrl; link.innerHTML = "";
-    var qr = el("img"); qr.src = topic.qr; qr.alt = "QR code to log your score and enter the raffle"; qr.width = 260; qr.height = 260; link.appendChild(qr);
+    link.appendChild(images.score || makeQr(topic.qr, "QR code to log your score and enter the raffle"));
     var steps = $("q-steps"); steps.innerHTML = "";
     cta.links.forEach(function (l) {
       var a = el("a"); a.href = l.href; a.target = "_blank"; a.rel = "noopener";
@@ -449,6 +449,14 @@
     var row = { type: "result", topic: topic.id, sessionId: state.sid, score: score, label: lab.name, points: state.pts.join(","), submittedAt: new Date().toISOString() };
     Object.keys(state.extra).forEach(function (k) { row[k] = state.extra[k]; });
     RB.send(row);
+  }
+
+  // QR images are created as soon as a quiz opens, so they are loaded and decoded before anyone taps for them.
+  var images = {};
+  function makeQr(src, alt) { var im = el("img"); im.decoding = "sync"; im.src = src; im.alt = alt; im.width = 260; im.height = 260; return im; }
+  function preload() {
+    images.program = makeQr(topic.program.qr, "QR code to sign up for the free " + topic.program.label);
+    images.score = makeQr(topic.qr, "QR code to log your score and enter the raffle");
   }
 
   function free(t) { return el("strong", "free", t); }   // highlights the free part of the offer
@@ -467,7 +475,7 @@
     var st = $("q-sheetText"); st.textContent = "";
     st.append("Scan the code to sign up for the ", free("free"), " " + p.label + ". Then come back and tap done.");
     var l = $("q-progLink"); l.href = p.url; l.innerHTML = "";
-    var im = el("img"); im.src = p.qr; im.alt = "QR code to sign up for the free " + p.label; im.width = 260; im.height = 260; l.appendChild(im);
+    l.appendChild(images.program || makeQr(p.qr, "QR code to sign up for the free " + p.label));   // already loaded by open()
     sheet.showModal();
     // The sheet grows out of the button that opened it.
     var r = $("q-double").getBoundingClientRect(), s = sheet.getBoundingClientRect();
@@ -484,7 +492,7 @@
 
   function open(id, carry) {
     topic = CONTENT[id];
-    carried = carry || null; doubled = false; closeSheet();
+    carried = carry || null; doubled = false; closeSheet(); preload();
     state = { r: 0, pts: [], extra: {}, sid: RB.newId() };
     keyHandler = null;
     $("q-when").textContent = topic.when;
