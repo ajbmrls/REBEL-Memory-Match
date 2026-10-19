@@ -14,16 +14,17 @@
   function later(fn, ms) { var id = setTimeout(fn, ms); timers.push(id); return id; }
   function clearAll() { clearInterval(tick); clearInterval(cd); timers.forEach(clearTimeout); timers = []; }
   function show(t, isGo) { num.className = ""; void num.offsetWidth; num.textContent = t; num.className = "tick" + (isGo ? " go" : ""); }
+  // Whole seconds only, no leading zeros: "7s", "42s", then "1:05" once a minute has passed.
   function fmt(ms) {
-    var c = Math.floor(ms / 10), s = Math.floor(c / 100);
-    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0") + "." + String(c % 100).padStart(2, "0");
+    var s = Math.floor(ms / 1000);
+    return s < 60 ? s + "s" : Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
   }
 
   function start() {
     clearAll();
     count.classList.remove("on"); rdy.hidden = true; win.hidden = true; go.style.visibility = "";
     open = []; moves = 0; pairs = 0; lock = true; phase = "preview";
-    $("mm-moves").textContent = 0; $("mm-pairs").textContent = "0/4"; $("mm-time").textContent = "0:00.00";
+    $("mm-moves").textContent = 0; $("mm-pairs").textContent = "0/4"; $("mm-time").textContent = "0s";
     grid.classList.add("locked"); grid.innerHTML = "";
     RB.shuffle(SET.concat(SET)).forEach(function (c) {
       var b = document.createElement("button");
@@ -60,7 +61,7 @@
     phase = "play"; lock = false; go.style.visibility = ""; go.disabled = false;
     grid.classList.remove("locked"); go.textContent = "New game";
     t0 = performance.now();
-    tick = setInterval(function () { $("mm-time").textContent = fmt(performance.now() - t0); }, 31);
+    tick = setInterval(function () { $("mm-time").textContent = fmt(performance.now() - t0); }, 100);
   }
 
   function flip(b) {

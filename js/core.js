@@ -33,10 +33,11 @@
     return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   };
 
-  // "0:12.01" -> "12.01". Longer runs become total seconds, e.g. "1:05.30" -> "65.30".
+  // "12s" -> "12", "1:05" -> "65": the memory time as plain seconds for the score form.
   RB.timeToSeconds = function (t) {
-    var m = /^(\d+):(\d{2})\.(\d{2})$/.exec(t);
-    return m ? (parseInt(m[1], 10) * 60 + parseInt(m[2], 10)) + "." + m[3] : t;
+    var m = /^(\d+):(\d{2})$/.exec(t);
+    if (m) return String(parseInt(m[1], 10) * 60 + parseInt(m[2], 10));
+    return String(t).replace(/s$/, "");
   };
 
   function legacyCopy(text) {
