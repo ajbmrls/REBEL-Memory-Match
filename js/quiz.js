@@ -2,7 +2,7 @@
    A game is run(stage, done, round). done([points...]) adds points and shows the Next button. */
 (function () {
   var $ = RB.$, el = RB.el, btn = RB.btn, CONTENT = window.REBEL_CONTENT;
-  var topic = null, state = null, keyHandler = null, carried = null, doubled = false;
+  var topic = null, state = null, keyHandler = null, carried = null, doubled = false, lastScore = 0;
 
   function feedback(ok, title, text, fun) {
     var f = el("div", "fb " + (ok ? "good" : "bad"));
@@ -431,14 +431,11 @@
     $("q-labelText").textContent = lab.text;
     $("q-ctaTitle").textContent = cta.title;
     $("q-ctaText").textContent = cta.text;
-    var list = $("q-logScores"); list.innerHTML = "";
-    function item(name, val) { var li = el("li"); li.appendChild(el("span", null, name)); li.appendChild(el("b", null, val)); list.appendChild(li); }
-    if (carried && carried.memory) item("Memory Match", carried.memory.time + " in " + carried.memory.moves + (carried.memory.moves === 1 ? " move" : " moves"));
-    item(topic.title, score + " out of 7");
+    lastScore = score;
+    renderScores();
     renderDouble();
     var link = $("q-qrLink"); link.href = topic.qrUrl; link.innerHTML = "";
-    var scoreText = (carried && carried.memory ? RB.timeToSeconds(carried.memory.time) + " + " : "") + score + "/7";
-    link.onclick = function (e) { e.preventDefault(); RB.copyAndGo(topic.qrUrl, scoreText); };
+    link.onclick = function (e) { e.preventDefault(); RB.copyAndGo(topic.qrUrl, scoreString()); };
     link.appendChild(images.score || makeQr(topic.qr, "QR code to log your score and enter the raffle"));
     link.appendChild(el("span", "qr-cap", SCORE_CAP)); edges(link);
     var steps = $("q-steps"); steps.innerHTML = "";
@@ -471,6 +468,23 @@
 
   function free(t) { return el("strong", "free", t); }   // highlights the free part of the offer
 
+  // The scores shown on the result screen.
+  function renderScores() {
+    var list = $("q-logScores"); list.innerHTML = "";
+    function item(name, val) { var li = el("li"); li.appendChild(el("span", null, name)); li.appendChild(el("b", null, val)); list.appendChild(li); }
+    if (carried && carried.memory) item("Memory Match", carried.memory.time + " in " + carried.memory.moves + (carried.memory.moves === 1 ? " move" : " moves"));
+    item(topic.title, lastScore + " out of 7");
+    if (doubled) item("Prevention program", "Applied to " + topic.program.abbr);
+  }
+  // The text copied for the score form, e.g. "12.5 + 2/7 + applied to HP".
+  function scoreString() {
+    var parts = [];
+    if (carried && carried.memory) parts.push(RB.timeToSeconds(carried.memory.time));
+    parts.push(lastScore + "/7");
+    if (doubled) parts.push("applied to " + topic.program.abbr);
+    return parts.join(" + ");
+  }
+
   function renderDouble() {
     var b = $("q-double");
     b.disabled = doubled; b.classList.toggle("doubled", doubled);
@@ -483,15 +497,20 @@
   function openSheet() {
     var p = topic.program;
     var st = $("q-sheetText"); st.textContent = "";
-    st.append("Scan the code to sign up for the ", free("free"), " " + p.label + ". Then come back and tap done.");
+    st.append("Scan the code to sign up for the ", free("free"), " " + p.label + ".");
+    $("q-sheetDone").hidden = true;   // only appears once they have opened the sign-up form
     var l = $("q-progLink"); l.href = p.url; l.innerHTML = "";
+    l.onclick = function () {
+      st.textContent = "Finish the form, then come back here and tap done.";
+      $("q-sheetDone").hidden = false;
+    };
     l.appendChild(images.program || makeQr(p.qr, "QR code to sign up for the free " + p.label));   // already loaded by open()
     l.appendChild(el("span", "qr-cap", PROGRAM_CAP)); edges(l);
     sheet.showModal();
     // The sheet grows out of the button that opened it.
     var r = $("q-double").getBoundingClientRect(), s = sheet.getBoundingClientRect();
     sheet.style.transformOrigin = (r.left + r.width / 2 - s.left) + "px " + (r.top + r.height / 2 - s.top) + "px";
-    $("q-sheetDone").focus({ preventScroll: true });
+    $("q-sheetClose").focus({ preventScroll: true });
   }
   function closeSheet() { if (sheet.open) sheet.close(); }
 
@@ -517,7 +536,7 @@
   $("q-start").addEventListener("click", reset);
   $("q-again").addEventListener("click", reset);
   $("q-double").addEventListener("click", openSheet);
-  $("q-sheetDone").addEventListener("click", function () { doubled = true; closeSheet(); renderDouble(); $("q-qrLink").focus({ preventScroll: true }); });
+  $("q-sheetDone").addEventListener("click", function () { doubled = true; closeSheet(); renderDouble(); renderScores(); $("q-qrLink").focus({ preventScroll: true }); });
   $("q-sheetClose").addEventListener("click", closeSheet);
   sheet.addEventListener("click", function (e) { if (e.target === sheet) closeSheet(); });   // tap outside to dismiss
   $("q-menu").addEventListener("click", function () { location.hash = ""; });
