@@ -194,6 +194,8 @@
     var out = el("div");
     stage.append(val, s, ticks, lock, out);
     s.addEventListener("input", function () { val.textContent = fmt(s.value); });
+    // If the browser cancels a touch part way through, drop focus so the slider cannot stay "held".
+    ["pointercancel", "touchcancel", "lostpointercapture"].forEach(function (t) { s.addEventListener(t, function () { s.blur(); }); });
     lock.addEventListener("click", function () {
       var v = parseFloat(s.value);
       s.disabled = true; lock.hidden = true;

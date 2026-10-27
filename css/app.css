@@ -554,3 +554,7 @@ button, a, summary, [role="button"] { touch-action: manipulation; }
 /* "Ready to Memorize?" must stand out from the blue card backs */
 .mm-memorize { background: #fff; color: #23609A; box-shadow: 0 0 0 5px var(--sky), 0 12px 36px rgba(0, 0, 0, .45); }
 .mm-memorize:hover:not(:disabled) { filter: none; background: #F2F7FC; }
+
+/* The slider must own every touch on it. With a page-level pan-y rule the browser cancelled the drag mid-move on phones,
+   leaving the slider stuck to the finger. */
+.slider { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
