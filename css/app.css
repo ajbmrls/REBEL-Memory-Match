@@ -558,3 +558,8 @@ button, a, summary, [role="button"] { touch-action: manipulation; }
 /* The slider must own every touch on it. With a page-level pan-y rule the browser cancelled the drag mid-move on phones,
    leaving the slider stuck to the finger. */
 .slider { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+/* Quiz intro: the picture fills the whole right side of the banner instead of stopping part way down. */
+@media (min-width: 880px) {
+  #q-intro .hero img.art { height: 100%; min-height: 0; max-height: none; object-fit: cover; object-position: center bottom; }
+}
