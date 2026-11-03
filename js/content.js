@@ -60,7 +60,7 @@ window.REBEL_CONTENT = {
 
   diabetes: {
     id: "diabetes",
-    title: "Know your diabetes",
+    title: "Know your sugar",
     when: "World Diabetes Day, November 14",
     lede: "Four quick games in about three minutes.",
     labels: [
