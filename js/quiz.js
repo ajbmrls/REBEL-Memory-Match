@@ -1,4 +1,4 @@
-/* Quiz engine shared by Know Your Hypertension and Know Your Sugar.
+/* Quiz engine shared by Know Your Hypertension and Know Your Sugar Level.
    A game is run(stage, done, round). done([points...]) adds points and shows the Next button. */
 (function () {
   var $ = RB.$, el = RB.el, btn = RB.btn, CONTENT = window.REBEL_CONTENT;
